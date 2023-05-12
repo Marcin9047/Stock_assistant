@@ -13,7 +13,10 @@ std::map <std::string, std::string> urls = {
     {"daily", "v2/histoday?"},
     {"hourly", "v2/histohour?"},
     {"minute", "v2/histominute?"},
-    {"API_Key", "9c4354165cddf934ea4f93cb003060ff783d64e074bb3065f8dce7b999d49ba7"}
+    
+    // keys below are private and need to be changed before going public
+    {"cc_API_Key", "9c4354165cddf934ea4f93cb003060ff783d64e074bb3065f8dce7b999d49ba7"},
+    {"NASDAQ_API_Key", "iSWZmxQeJPXMNLrpiBrf"}
 };
 
 
@@ -37,7 +40,7 @@ std::string create_url(std::string type, std::string crypto, std::string currenc
 
     url += currency;
     
-    // url += urls["API_Key"];
+    // url += urls["cc_API_Key"];
     return url;
 }
 
