@@ -11,6 +11,8 @@ std::map <std::string, std::string> urls = {
     {"single","price?"},
     {"multi","pricemulti?"},
     {"daily", "v2/histoday?"},
+    {"hourly", "v2/histohour?"},
+    {"minute", "v2/histominute?"},
     {"API_Key", "9c4354165cddf934ea4f93cb003060ff783d64e074bb3065f8dce7b999d49ba7"}
 };
 
@@ -24,8 +26,17 @@ size_t writeFunction(void *ptr, size_t size, size_t nmemb, std::string* data) {
 std::string create_url(std::string type, std::string crypto, std::string currency) {
     std::string url = "";
     url += urls["crypto compare"] + urls[type];
-    url += "fsym="+ crypto +"&tsym="+ currency;
 
+    if (type == "single") {
+        url += "fsym="+ crypto + "&tsyms=";
+    } else if (type == "multi") {
+        url += "fsyms=" + crypto + "&tsyms=";
+    } else if (urls[type].find("histo") != std::string::npos) {
+        url += "fsym="+ crypto + "&tsym=";
+    }
+
+    url += currency;
+    
     // url += urls["API_Key"];
     return url;
 }
@@ -45,6 +56,6 @@ std::string data_from_url(std::string url) {
 }
 
 int main() {
-    std::string url = create_url("daily","BTC","USD");
+    std::string url = create_url("multi","BTC","USD");
     std::cout << data_from_url(url) << "\n" << std::endl;
 }
