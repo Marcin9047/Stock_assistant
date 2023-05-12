@@ -3,16 +3,36 @@
 #include <map>
 #include <curl/curl.h>
 
+// For more information about api:
+// https://min-api.cryptocompare.com/documentation
+
+std::map <std::string, std::string> urls = {
+    {"crypto compare", "https://min-api.cryptocompare.com/data/"},
+    {"single","price?"},
+    {"multi","pricemulti?"},
+    {"daily", "v2/histoday?"},
+    {"API_Key", "9c4354165cddf934ea4f93cb003060ff783d64e074bb3065f8dce7b999d49ba7"}
+};
+
+
+
 size_t writeFunction(void *ptr, size_t size, size_t nmemb, std::string* data) {
     data->append((char*) ptr, size * nmemb);
     return size * nmemb;
 }
 
-std::string data_from_url() {
-    std::string cryp_compare = "https://data-api.cryptocompare.com/";
+std::string create_url(std::string type, std::string crypto, std::string currency) {
+    std::string url = "";
+    url += urls["crypto compare"] + urls[type];
+    url += "fsym="+ crypto +"&tsym="+ currency;
+
+    // url += urls["API_Key"];
+    return url;
+}
+
+std::string data_from_url(std::string url) {
     CURL *curl = curl_easy_init();
-    if(curl) {
-        std::string url = cryp_compare + "data/tradingsignals/intotheblock/latest?fsym=BTC";
+    if(curl) {        
         std::string response_string;
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeFunction);
@@ -25,5 +45,6 @@ std::string data_from_url() {
 }
 
 int main() {
-    std::cout << data_from_url() << "\n" << std::endl;
+    std::string url = create_url("daily","BTC","USD");
+    std::cout << data_from_url(url) << "\n" << std::endl;
 }
