@@ -1,8 +1,8 @@
 #include "data.h"
 
 data::data(char stock, int time, float high,
-        float low, float open, float volume_from,
-        float volume_to, float close, char conversionType)
+        float low, float open, float vol_from,
+        float vol_to, float close, char conversion)
         {
            stock_name = stock;
            conversionType = conversion;

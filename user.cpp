@@ -1,6 +1,9 @@
 #include "user.h"
+#include "brand.h"
+#include <vector>
+#include <iostream>
 
-user::user(int capital, std::vector<char> fav, char attitude)
+user::user(int capital, std::vector<brand> fav, char attitude)
 {
     user_capital = capital;
     favourites = fav;
@@ -8,7 +11,7 @@ user::user(int capital, std::vector<char> fav, char attitude)
 
 };
 
-int user::grat_capital()
+int user::get_capital()
 {
     return user_capital;
 };
@@ -29,16 +32,18 @@ void user::add_favourite(brand one)
 
 void user::delate_favourite(char name)
 {
-    for (int i=0, i <= size(favourite), i++)
+    std::vector<brand> new_favourites;
+    for (int i=0; i <= favourites.size(); i++)
     {
-        if (favourites[i].get_brand() == name)
+        if (favourites[i].get_brand() != name)
         {
-            //to be written
+            new_favourites.push_back(favourites[i]);
         }
     }
+    favourites = new_favourites;
 };
 
-std::vector<char> user::get_favourites()
+std::vector<brand> user::get_favourites()
 {
     return favourites;
 };
