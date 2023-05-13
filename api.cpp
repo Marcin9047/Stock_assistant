@@ -24,11 +24,6 @@ std::string API::get_data(std::string type, std::string crypto, std::string curr
     return data_from_url(url);
 }
 
-size_t API::writeFunction(void *ptr, size_t size, size_t nmemb, std::string* data) {
-    data->append((char*) ptr, size * nmemb);
-    return size * nmemb;
-}
-
 std::string API::create_url(std::string type, std::string crypto, std::string currency) {
     std::string url = "";
     url += urls["crypto compare"] + urls[type];
@@ -45,6 +40,11 @@ std::string API::create_url(std::string type, std::string crypto, std::string cu
     
     // url += urls["cc_API_Key"];
     return url;
+}
+
+size_t API::writeFunction(void *ptr, size_t size, size_t nmemb, std::string* data) {
+    data->append((char*) ptr, size * nmemb);
+    return size * nmemb;
 }
 
 std::string API::data_from_url(std::string url) {

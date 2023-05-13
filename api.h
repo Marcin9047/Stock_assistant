@@ -15,8 +15,8 @@ public:
 private:
     std::map<std::string, std::string> urls;
 
-    static size_t writeFunction(void *ptr, size_t size, size_t nmemb, std::string* data);
     std::string create_url(std::string type, std::string crypto, std::string currency);
+    static size_t writeFunction(void *ptr, size_t size, size_t nmemb, std::string* data);
     std::string data_from_url(std::string url);
 };
 
