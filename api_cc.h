@@ -15,7 +15,7 @@ private:
     std::string type;
     std::string crypto; 
     std::string currency;
-    int limit = 2000;
+    // std::string limit = "2000";
     std::map<std::string, std::string> urls;
     std::string create_url() override;
 };

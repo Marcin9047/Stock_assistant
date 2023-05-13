@@ -42,3 +42,9 @@ std::string Api::data_from_url(std::string url) {
     }
     return "error in api data";
 }
+
+void Api::save_url_to_log(const std::string &fileName, const std::string &line)
+{
+    std::ofstream file(fileName, std::ios::app);
+    file << line << std::endl;
+}

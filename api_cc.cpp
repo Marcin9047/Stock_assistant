@@ -32,15 +32,20 @@ std::string ApiCC::create_url() {
     url += urls["crypto compare"] + urls[type];
 
     if (type == "single") {
-        url += "fsym=" + crypto + "&tsyms=";
+        url += "fsym=" + crypto + "&tsyms=" + currency;
     } else if (type == "multi") {
-        url += "fsyms=" + crypto + "&tsyms=";
+        url += "fsyms=" + crypto + "&tsyms=" + currency;
     } else if (urls[type].find("histo") != std::string::npos) {
-        url += "fsym=" + crypto + "&tsym=";
+        url += "fsym=" + crypto + "&tsym=" + currency;
+        // url += "&limit=" + limit;
+        url += "&toTs=";
+        auto now = std::chrono::system_clock::now();
+        auto now_time_t = std::chrono::system_clock::to_time_t(now);
+        url += std::to_string(now_time_t);
     }
 
-    url += currency;
-    
     // url += keys["cc_API_Key"];
+
+    save_url_to_log(log_path, url);
     return url;
 }
