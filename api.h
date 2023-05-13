@@ -5,17 +5,17 @@
 #include <fstream>
 #include <string>
 #include <map>
+#include <chrono>
 #include <curl/curl.h>
 
-class API {
+class Api {
 public:
-    API();
-    std::string get_data(std::string type, std::string crypto, std::string currency);
+    Api();
+    std::string get_data();
 
 private:
-    std::map<std::string, std::string> urls;
-
-    std::string create_url(std::string type, std::string crypto, std::string currency);
+    std::map<std::string, std::string> keys;
+    virtual std::string create_url();
     static size_t writeFunction(void *ptr, size_t size, size_t nmemb, std::string* data);
     std::string data_from_url(std::string url);
 };
