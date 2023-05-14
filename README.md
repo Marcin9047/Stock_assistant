@@ -1,13 +1,29 @@
-# PROI
+# Asystent giełdowy
+
+Celem projektu jest stworzenie aplikacji, która umożliwi użytkownikowi pozyskiwanie informacje odnośnie zmian cen akcji poszczególnych firm w celu ułatwienia wykonywania inwestycji. Każdy użytkownik, po zalogowaniu, będzie mógł przeglądać dane pozyskane za pomocą API ze stron giełd. 
+
+## System sortowania
+
+System przedstawi mu listę firm, których zmiana na rynku będzie pasowała do charakterystyki inwestycji użytkownika np. na podstawie jego skłonności do ryzyka. Użytkownik uzyska propozycje najlepsze dla niego co znacznie skróci czas wyboru odpowiedniej firmy.
+
+## Lista ulubionych
+
+Inwestor będzie również mógł zapisać firmy na liście ulubionych w celu łatwiejszego dostępu.
+Dzięki temu, możliwe będzie również uzyskanie codziennej informacji odnośnie zmian cen ulubionych akcji. Cała lista costanie również zapisana do pliku. 
+
+## Interface
+
+Całość zostanie przedstawiona w postaci wykresów w celu łatwiejszego odczytu tendencji. W sposób czytelny użytkownik będzie mógł zobaczyć zmiany cen z ostatnich dni co jest kluczowe w ocenie ryzyka.
 
 
+# Podział ról
 
-## Getting started
-
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
+Małgosia Dulikowska:
+- Interface. Zewnętrzna biblioteka do obsługi aplikacji. -
+Olek Przyborek:
+-
+Radek Ślepowroński
+Marcin Połosak
 ## Add your files
 
 - [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
