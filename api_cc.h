@@ -17,7 +17,7 @@ private:
     std::string currency;
     // std::string limit = "2000";
     std::map<std::string, std::string> urls;
-    std::string create_url() override;
+    void create_url() override;
 };
 
 

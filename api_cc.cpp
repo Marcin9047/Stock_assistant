@@ -27,8 +27,7 @@ void ApiCC::set_currency(std::string new_currency)
     currency = new_currency;
 }
 
-std::string ApiCC::create_url() {
-    std::string url = "";
+void ApiCC::create_url() {
     url += urls["crypto compare"] + urls[type];
 
     if (type == "single") {
@@ -44,8 +43,7 @@ std::string ApiCC::create_url() {
         url += std::to_string(now_time_t);
     }
 
-    // url += keys["cc_API_Key"];
+    // url += "&api_key=" + keys["cc_API_Key"];
 
     save_url_to_log(log_path, url);
-    return url;
 }
