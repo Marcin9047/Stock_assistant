@@ -12,7 +12,6 @@ class Api {
 public:
     Api(std::string new_url = "");
     std::string get_data();
-    std::string data_from_url(std::string url);
     void save_data_to_json();
 
 protected:
@@ -23,6 +22,7 @@ protected:
 
 private:
     virtual void create_url();
+    std::string data_from_url();
     static size_t writeFunction(void *ptr, size_t size, size_t nmemb, std::string* data);
 };
 

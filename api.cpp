@@ -19,11 +19,7 @@ Api::Api(std::string new_url)
 }
 
 std::string Api::get_data() {
-    if (url == "")
-    {
-        create_url();
-    }    
-    return data_from_url(url);
+    return data_from_url();
 }
 
 void Api::create_url(){
@@ -35,7 +31,12 @@ size_t Api::writeFunction(void *ptr, size_t size, size_t nmemb, std::string* dat
     return size * nmemb;
 }
 
-std::string Api::data_from_url(std::string url) {
+std::string Api::data_from_url() {
+    if (url == "")
+    {
+        create_url();
+    }
+
     CURL *curl = curl_easy_init();
     if(curl) { 
         std::string response_string;
@@ -46,17 +47,12 @@ std::string Api::data_from_url(std::string url) {
         curl_easy_cleanup(curl);
         return response_string;
     }
-    return "error in api data";
+    return "error in api data_from_url()";
 }
 
 void Api::save_data_to_json(){
-    if (url == "")
-    {
-        create_url();
-    }
-    
     std::ofstream file("file.json");
-    file << data_from_url(url);
+    file << data_from_url();
     file.close();
 }
 
