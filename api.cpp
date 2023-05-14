@@ -1,7 +1,12 @@
 #include "api.h"
 
-Api::Api()
+Api::Api(std::string new_url)
 {
+    if (new_url != "")
+    {
+        url = new_url;
+    }    
+
     // For more information about api:
     // https://min-api.cryptocompare.com/documentation
     // https://data.nasdaq.com/tools/api
@@ -14,14 +19,15 @@ Api::Api()
 }
 
 std::string Api::get_data() {
-
-    std::string url = create_url();
+    if (url == "")
+    {
+        create_url();
+    }    
     return data_from_url(url);
 }
 
-std::string Api::create_url(){
+void Api::create_url(){
     // Overrided in subclasses
-    return "";
 };
 
 size_t Api::writeFunction(void *ptr, size_t size, size_t nmemb, std::string* data) {
@@ -41,6 +47,17 @@ std::string Api::data_from_url(std::string url) {
         return response_string;
     }
     return "error in api data";
+}
+
+void Api::save_data_to_json(){
+    if (url == "")
+    {
+        create_url();
+    }
+    
+    std::ofstream file("file.json");
+    file << data_from_url(url);
+    file.close();
 }
 
 void Api::save_url_to_log(const std::string &fileName, const std::string &line)

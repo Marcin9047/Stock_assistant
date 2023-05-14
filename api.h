@@ -10,18 +10,20 @@
 
 class Api {
 public:
-    Api();
+    Api(std::string new_url = "");
     std::string get_data();
+    std::string data_from_url(std::string url);
+    void save_data_to_json();
 
 protected:
+    std::string url;
     std::map<std::string, std::string> keys;
+    std::string log_path = "log/api_log.txt";
     void save_url_to_log(const std::string& fileName, const std::string& line);
-    std::string log_path = "api_log.txt";
 
 private:
-    virtual std::string create_url();
+    virtual void create_url();
     static size_t writeFunction(void *ptr, size_t size, size_t nmemb, std::string* data);
-    std::string data_from_url(std::string url);
 };
 
 #endif
