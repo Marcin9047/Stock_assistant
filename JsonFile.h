@@ -6,10 +6,10 @@ using json = nlohmann::json;
 
 class JsonFile {
 public:
-    JsonFile(std::string filename) : m_filename(filename) {}
-
-    void read(json& j);
-    void write(const json& j);
+    JsonFile(std::string filename);
+    std::string  read();
+    void write(std::string filename);
 private:
     std::string m_filename;
+
 };

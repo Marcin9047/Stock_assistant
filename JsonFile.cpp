@@ -1,43 +1,40 @@
 #include <iostream>
 #include <fstream>
-#include"JsonFile.h"
+#include "JsonFile.h"
+#include "json.hpp"
 
 using json = nlohmann::json;
 
-
-void JsonFile::read(json& j)
+JsonFile::JsonFile(std::string filename)
+{
+    m_filename = filename;
+}
+std::string JsonFile::read()
 {
     std::ifstream file(m_filename);
-    if (!file) {
+    if (!file)
+    {
         std::cerr << "Failed to open file " << m_filename << std::endl;
-        return false;
+        return "";
     }
 
-    try {
-        file >> j;
-    } catch (const std::exception& e) {
-        std::cerr << "Failed to parse JSON from file " << m_filename << ": " << e.what() << std::endl;
-        return false;
-    }
+    json j;
+    file >> j;
 
-    return true;
+	return j.dump(4);
+
 }
 
-void JsonFile::write(const json& j)
+void JsonFile::write(std::string filename)
 {
-    std::ofstream file(m_filename);
-    if (!file) {
-        std::cerr << "Failed to open file " << m_filename << " for writing" << std::endl;
-        return false;
+    std::ofstream output_file(filename);
+    if (!output_file)
+    {
+        std::cerr << "Failed to open file " << m_filename << std::endl;
+        return;
     }
 
-    try {
-        file << std::setw(4) << j;
-    } catch (const std::exception& e) {
-        std::cerr << "Failed to serialize JSON to file " << m_filename << ": " << e.what() << std::endl;
-        return false;
-    }
 
-    return true;
+    output_file << read()<< std::endl;
 }
 
