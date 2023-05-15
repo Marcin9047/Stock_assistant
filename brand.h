@@ -1,5 +1,6 @@
 #include <istream>
 #include <vector>
+#include "data.h"
 
 class brand
 {
@@ -14,4 +15,4 @@ class brand
         float last_value();
         float last_read_time();
         bool is_rising();
-    }   
+    },
