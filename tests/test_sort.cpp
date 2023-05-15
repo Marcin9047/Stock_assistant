@@ -74,6 +74,9 @@ TEST_CASE("isrising method")
     SECTION("isrising - array with more than two elements (not continuously rising)")
     {
         std::vector<double> array = {1.0, 3.0, 2.0, 4.0};
+        REQUIRE(isrising(array));
+        array.clear();
+        array = {1.0, 3.0, 0.0, 2.0};
         REQUIRE(!isrising(array));
     }
 }
