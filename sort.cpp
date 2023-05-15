@@ -1,4 +1,8 @@
-#include <data.h>
+#include <iostream>
+#include <vector>
+#include<cmath>
+#include"sort.h"
+
 
 sort::sort(int capital, char attitude)
 {
@@ -9,7 +13,7 @@ sort::sort(int capital, char attitude)
         for(//every brand)
         {
 
-            data data();
+
             //algorytmy wyliczające czy firma spełnia zalozenia
             float new_wsp;
             if(new_wsp>wsp)
@@ -25,7 +29,38 @@ sort::sort(int capital, char attitude)
 
     }
 
-}
+};
+
+bool isrising(const std::vector<double>& inputArray)
+{
+
+    double result =0.0;
+    if (inputArray.size() < 2) {
+        std::cout << "Tablica wejściowa musi mieć co najmniej 2 elementy!" << std::endl;
+        return false;
+    }
+
+    std::vector<double> currentArray = inputArray;
+
+    while (currentArray.size() > 2) {
+        std::vector<double> newArray;
+
+        for (size_t i = 0; i < currentArray.size() - 1; i++) {
+            double average = (currentArray[i] + currentArray[i + 1]) / 2;
+            newArray.push_back(average);
+        }
+
+        currentArray = newArray;
+    }
+
+    result = currentArray[1] - currentArray[0];
+
+    if (result>0)
+    {
+        return true;
+    }
+    return false ;
+};
 
 brand sort::best_match()
 {

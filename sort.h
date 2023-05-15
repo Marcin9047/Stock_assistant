@@ -2,6 +2,10 @@
 clasa otrzymująca dane od użytkownika w postaci kapitału, minimalnych zyskow, maksymalnych strat i czasu
 na tej podstawie wybiera optymalne firmy
 */
+#include <iostream>
+#include <vector>
+#include "../data/user.h"
+
 class sort
 {
     private:
@@ -9,7 +13,8 @@ class sort
 
     public:
     sort(int capital, char attitude);
+    bool isrising(const std::vector<double>& inputArray);
     brand best_match();
 
 
-}
+};
