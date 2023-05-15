@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = -Wall -Wextra -std=c++17
-LDFLAGS = -lcurl
+LDFLAGS = -lcurl # dodać dodatkowe biblioteki
 INCLUDES = -Isrc/api
 SRCS = $(wildcard src/api/*.cpp) main.cpp
 OBJS = $(addprefix build/,$(notdir $(SRCS:.cpp=.o)))
@@ -18,13 +18,18 @@ $(EXECUTABLE): $(OBJS)
 build/%.o: src/api/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
+# przykładowy build do kopiowania
+#
+# build/%.o: <ścieżka do plików>%.cpp
+# 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
 build/%.o: tests/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
 build/main.o: main.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
-test: $(TEST_OBJS) $(filter-out build/main.o,$(OBJS))
+tests: $(TEST_OBJS) $(filter-out build/main.o,$(OBJS))
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -o run_tests $^ $(LDFLAGS)
 
 clean:
