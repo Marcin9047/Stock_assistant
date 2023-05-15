@@ -11,6 +11,7 @@
 class Api {
 public:
     Api(std::string new_url = "");
+    virtual ~Api() = default;
     std::string get_data();
     void save_data_to_json();
 
