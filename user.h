@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 
-
 class user
 {
     std::vector<brand> favourites;
@@ -18,4 +17,9 @@ class user
         void delate_favourite(char name);
         std::vector<brand> get_favourites();
         brand get_suggestions();
+};
+
+class admin: public user
+{
+
 };

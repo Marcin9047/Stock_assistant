@@ -5,6 +5,7 @@
 class brand
 {
     char brand_name;
+    actual_data last_read;
     std::vector<data> history;
     private:
         void clear_before(int time);
@@ -15,4 +16,14 @@ class brand
         float last_value();
         float last_read_time();
         bool is_rising();
-    },
+    };
+
+class crypto: public brand
+{
+
+};
+
+class regular_action: public brand
+{
+
+};
