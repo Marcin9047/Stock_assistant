@@ -38,4 +38,4 @@ tests: $(TEST_OBJS) $(filter-out build/main.o,$(OBJS))
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -o run_all_tests $^ $(LDFLAGS)
 
 clean:
-	rm -f build/*.o run_all_tests $(EXECUTABLE)
+	rm -f build/*.o run_all_tests proi $(EXECUTABLE)
