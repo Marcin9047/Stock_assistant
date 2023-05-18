@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <list>
 #include <string>
 #include <fstream>
 #include "json.hpp"
@@ -46,4 +47,75 @@ public:
 
         return dataPoints;
     }
+
+    std::list<std::string> getTimeList(const std::list<DataPoint>& dataPoints) {
+        std::list<std::string> timeList;
+
+        for (const auto& dp : dataPoints) {
+            timeList.push_back(dp.time);
+        }
+
+        return timeList;
+    }
+
+    std::list<double> getOpenList(const std::list<DataPoint>& dataPoints) {
+        std::list<double> openList;
+
+        for (const auto& dp : dataPoints) {
+            openList.push_back(dp.open);
+        }
+
+        return openList;
+    }
+
+    std::list<double> getHighList(const std::list<DataPoint>& dataPoints) {
+        std::list<double> highList;
+
+        for (const auto& dp : dataPoints) {
+           highList.push_back(dp.high);
+        }
+
+        return highList;
+    }
+
+    std::list<double> getLowList(const std::list<DataPoint>& dataPoints) {
+        std::list<double> lowList;
+
+        for (const auto& dp : dataPoints) {
+           lowList.push_back(dp.low);
+        }
+
+        return lowList;
+    }
+
+    std::list<double> getVolumeFromList(const std::list<DataPoint>& dataPoints) {
+        std::list<double> volumeFromList;
+
+        for (const auto& dp : dataPoints) {
+           volumeFromList.push_back(dp.volumeFrom);
+        }
+
+        return volumeFromList;
+    }
+
+    std::list<double> getVolumeToList(const std::list<DataPoint>& dataPoints) {
+        std::list<double> volumeToList;
+
+        for (const auto& dp : dataPoints) {
+           volumeToList.push_back(dp.volumeTo);
+        }
+
+        return volumeToList;
+    }
+
+    std::list<double> getCloseList(const std::list<DataPoint>& dataPoints) {
+        std::list<double> closeList;
+
+        for (const auto& dp : dataPoints) {
+           closeList.push_back(dp.close);
+        }
+
+        return closeList;
+    }
+
 };
