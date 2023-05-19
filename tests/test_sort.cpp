@@ -33,6 +33,24 @@ bool isrising(const std::vector<double>& inputArray)
     return false ;
 };
 
+double recentdiff(const std::vector<double>& values) {
+
+    int size = values.size();
+    if (size < 4) {
+        std::cerr << "Wektor musi zawierać przynajmniej 4 wartości!" << std::endl;
+        return 0.0;
+    }
+
+    double sum = 0.0;
+    for (int i = size - 2; i >= size - 4; --i) {
+        sum += values[i];
+    }
+    double average = sum / 3.0;
+    double lastValue = values[size - 1];
+    double difference = lastValue - average;
+    return difference;
+}
+
 TEST_CASE("isrising method")
 {
     SECTION("isrising - empty array")
@@ -80,3 +98,18 @@ TEST_CASE("isrising method")
         REQUIRE(!isrising(array));
     }
 }
+
+TEST_CASE("recentdiff method") {
+    SECTION("increased") {
+        std::vector<double> values = {1.0, 2.0, 3.0, 4.0, 5.0};
+        double result = recentdiff(values);
+        REQUIRE(result == Approx(2.0));
+    }
+
+    SECTION("decreased") {
+        std::vector<double> values = {5.0, 4.0, 3.0, 2.0, 1.0};
+        double result = recentdiff(values);
+        REQUIRE(result == Approx(-2.0));
+    }
+}
+

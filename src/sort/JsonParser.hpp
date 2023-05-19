@@ -7,18 +7,21 @@
 
 using json = nlohmann::json;
 
-struct DataPoint {
-    std::string time;
-    double open;
-    double high;
-    double low;
-    double volumeFrom;
-    double volumeTo;
-    double close;
-};
+
 
 class JsonParser {
+
 public:
+    struct DataPoint {
+        std::string time;
+        double open;
+        double high;
+        double low;
+        double volumeFrom;
+        double volumeTo;
+        double close;
+    };
+
     std::vector<DataPoint> parseJSON(const std::string& jsonStr) {
         std::vector<DataPoint> dataPoints;
 
@@ -110,6 +113,16 @@ public:
 
     std::list<double> getCloseList(const std::list<DataPoint>& dataPoints) {
         std::list<double> closeList;
+
+        for (const auto& dp : dataPoints) {
+           closeList.push_back(dp.close);
+        }
+
+        return closeList;
+    }
+
+    std::vector<double> getCloseVector(const std::vector<DataPoint>& dataPoints) {
+        std::vector<double> closeList;
 
         for (const auto& dp : dataPoints) {
            closeList.push_back(dp.close);

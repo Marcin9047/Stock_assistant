@@ -1,10 +1,14 @@
 #include <iostream>
 #include <vector>
-#include <list>
 #include <cmath>
+#include <list>
+#include <string>
+#include <fstream>
 #include "sort.h"
 #include "JsonParser.hpp"
+#include "JsonFile.h"
 
+using DataPoint = JsonParser::DataPoint;
 
 sort::sort(int capital, char attitude)
 {
@@ -15,19 +19,22 @@ sort::sort(int capital, char attitude)
     float wsp=0;
     float new_wsp=0;
     char new_name;
-    if(attitude=='')
+    if(attitude=='low')
     {
         //api request
-        for(//every brand)
+
+        for(int i=0;i<1;i++)//for each brand
         {
+            if(isrising(parser.getCloseVector(dataPoints)))
+            {
+                new_wsp++;
+            }
 
 
-            //algorytmy wyliczające czy firma spełnia zalozenia
-            float new_wsp;
             if(new_wsp>wsp)
             {
-                brand_name = data.get_stock()
                 wsp = new_wsp;
+                brand_name = new_name;
             }
         }
     }
@@ -38,6 +45,23 @@ sort::sort(int capital, char attitude)
     }
 
 };
+
+double recentdiff(const std::vector<double>& values) {
+    int size = values.size();
+    if (size < 4) {
+        std::cerr << "Wektor musi zawierać przynajmniej 4 wartości!" << std::endl;
+        return 0.0;
+    }
+
+    double sum = 0.0;
+    for (int i = size - 2; i >= size - 4; --i) {
+        sum += values[i];
+    }
+    double average = sum / 3.0;
+    double lastValue = values[size - 1];
+    double difference = lastValue - average;
+    return difference;
+}
 
 bool isrising(const std::vector<double>& inputArray)
 {
