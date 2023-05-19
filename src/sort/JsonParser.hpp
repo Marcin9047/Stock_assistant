@@ -51,7 +51,7 @@ public:
         return dataPoints;
     }
 
-    std::list<std::string> getTimeList(const std::list<DataPoint>& dataPoints) {
+    std::list<std::string> getTimeList(const std::vector<DataPoint>& dataPoints) {
         std::list<std::string> timeList;
 
         for (const auto& dp : dataPoints) {
@@ -61,7 +61,7 @@ public:
         return timeList;
     }
 
-    std::list<double> getOpenList(const std::list<DataPoint>& dataPoints) {
+    std::list<double> getOpenList(const std::vector<DataPoint>& dataPoints) {
         std::list<double> openList;
 
         for (const auto& dp : dataPoints) {
@@ -71,7 +71,7 @@ public:
         return openList;
     }
 
-    std::list<double> getHighList(const std::list<DataPoint>& dataPoints) {
+    std::list<double> getHighList(const std::vector<DataPoint>& dataPoints) {
         std::list<double> highList;
 
         for (const auto& dp : dataPoints) {
@@ -81,7 +81,7 @@ public:
         return highList;
     }
 
-    std::list<double> getLowList(const std::list<DataPoint>& dataPoints) {
+    std::list<double> getLowList(const std::vector<DataPoint>& dataPoints) {
         std::list<double> lowList;
 
         for (const auto& dp : dataPoints) {
@@ -91,7 +91,7 @@ public:
         return lowList;
     }
 
-    std::list<double> getVolumeFromList(const std::list<DataPoint>& dataPoints) {
+    std::list<double> getVolumeFromList(const std::vector<DataPoint>& dataPoints) {
         std::list<double> volumeFromList;
 
         for (const auto& dp : dataPoints) {
@@ -101,7 +101,7 @@ public:
         return volumeFromList;
     }
 
-    std::list<double> getVolumeToList(const std::list<DataPoint>& dataPoints) {
+    std::list<double> getVolumeToList(const std::vector<DataPoint>& dataPoints) {
         std::list<double> volumeToList;
 
         for (const auto& dp : dataPoints) {
@@ -111,7 +111,7 @@ public:
         return volumeToList;
     }
 
-    std::list<double> getCloseList(const std::list<DataPoint>& dataPoints) {
+    std::list<double> getCloseList(const std::vector<DataPoint>& dataPoints) {
         std::list<double> closeList;
 
         for (const auto& dp : dataPoints) {
