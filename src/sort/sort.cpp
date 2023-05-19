@@ -3,11 +3,18 @@
 #include <list>
 #include <cmath>
 #include "sort.h"
+#include "JsonParser.hpp"
 
 
 sort::sort(int capital, char attitude)
 {
+    JsonFile file("file.json");
+    std::string jsonString = file.read();
+    JsonParser parser;
+    std::vector<DataPoint> dataPoints = parser.parseJSON(jsonString);
     float wsp=0;
+    float new_wsp=0;
+    char new_name;
     if(attitude=='')
     {
         //api request
