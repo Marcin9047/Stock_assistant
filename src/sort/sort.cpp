@@ -1,7 +1,8 @@
 #include <iostream>
 #include <vector>
-#include<cmath>
-#include"sort.h"
+#include <list>
+#include <cmath>
+#include "sort.h"
 
 
 sort::sort(int capital, char attitude)
