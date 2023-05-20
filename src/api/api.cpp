@@ -2,7 +2,7 @@
 
 Api::Api(std::string new_url)
 {
-    if (new_url != "")
+    if (!new_url.empty())
     {
         url = new_url;
     }    
@@ -32,22 +32,31 @@ size_t Api::writeFunction(void *ptr, size_t size, size_t nmemb, std::string* dat
 }
 
 std::string Api::data_from_url() {
-    if (url == "")
-    {
+    if (url.empty()) {
         create_url();
     }
 
-    CURL *curl = curl_easy_init();
-    if(curl) { 
+    std::unique_ptr<CURL, CurlDeleter> curl(curl_easy_init());
+    if(curl) {
         std::string response_string;
-        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeFunction);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_string);
-        curl_easy_perform(curl);
-        curl_easy_cleanup(curl);
+        curl_easy_setopt(curl.get(), CURLOPT_URL, url.c_str());
+        curl_easy_setopt(curl.get(), CURLOPT_WRITEFUNCTION, writeFunction);
+        curl_easy_setopt(curl.get(), CURLOPT_WRITEDATA, &response_string);
+        CURLcode res = curl_easy_perform(curl.get());
+        if(res != CURLE_OK) {
+            throw std::runtime_error(std::string("curl_easy_perform() failed: ") 
+                                     + curl_easy_strerror(res));
+        }
+
+        long response_code;
+        curl_easy_getinfo(curl.get(), CURLINFO_RESPONSE_CODE, &response_code);
+        if(response_code >= 400) {
+            throw std::runtime_error("HTTP error: " + std::to_string(response_code));
+        }
+
         return response_string;
     }
-    return "error in api data_from_url()";
+    throw std::runtime_error("Failed to initialize cURL");
 }
 
 void Api::save_data_to_json(){

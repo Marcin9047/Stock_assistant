@@ -6,6 +6,7 @@
 #include <string>
 #include <map>
 #include <chrono>
+#include <memory>
 #include <curl/curl.h>
 
 class Api {
@@ -27,4 +28,10 @@ private:
     static size_t writeFunction(void *ptr, size_t size, size_t nmemb, std::string* data);
 };
 
+class CurlDeleter {
+public:
+    void operator()(CURL* curl) {
+        curl_easy_cleanup(curl);
+    }
+};
 #endif

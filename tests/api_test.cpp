@@ -10,11 +10,13 @@ TEST_CASE("Api class") {
         std::string data = api.get_data();
         REQUIRE(!data.empty());
     }
-    SECTION("get_data returns an empty string if url is incorrect") {
-        std::string test_url = "https://notexistingurl.com/data/";
-        Api api(test_url);
-        std::string data = api.get_data();
-        REQUIRE(data.empty());
+    SECTION("Test if get_data throws std::runtime_error") {
+        Api api("https://notexistingurl.com/data/");
+        REQUIRE_THROWS_AS(api.get_data(), std::runtime_error);
+    }
+    SECTION("Test if get_data throws std::runtime_error when url empty") {
+        Api api;
+        REQUIRE_THROWS_AS(api.get_data(), std::runtime_error);
     }
 }
 
