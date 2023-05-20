@@ -15,21 +15,37 @@ sort::sort(int capital, char attitude)
     JsonFile file("file.json");
     std::string jsonString = file.read();
     JsonParser parser;
+    NASDAQ_pars N_parser;
     std::vector<DataPoint> dataPoints = parser.parseJSON(jsonString);
-    float wsp=0;
-    float new_wsp=0;
-    char new_name;
-    if(attitude=='low')
+    std::vector<DataPoint> N_dataPoints = N_parser.parse_NASDAQ(jsonString);
+    std::vector<double> close = parser.getCloseVector(dataPoints);
+    if(attitude=='l')
     {
+        float g_wsp = 1.0;
+        float r_wsp = 2.0;
+        float l_wsp = 1.5;
+        float wsp=0;
+        float new_wsp=0;
+        char new_name;
         //api request
 
         for(int i=0;i<1;i++)//for each brand
         {
-            if(isrising(parser.getCloseVector(dataPoints)))
+            if(isrising(close))
             {
-                new_wsp++;
-            }
+                new_wsp += r_wsp;
+                g_wsp *= recentdiff(close);
 
+                if(islqrise(parser.getVolumeToVector(dataPoints)))
+                {
+                    new_wsp += (g_wsp-1)*l_wsp;//jeśli funkcja globalnie rosnie to jesli rosnie plynnosc to chcemy by osttatnia wartosc byla w gorca
+                }
+                else
+                {
+                    new_wsp += (1-g_wsp)*l_wsp; // jesli funkcja rosnie a lokalnie plynnosc maleje to chcemy by ostatnia wartosc byla w dolku
+
+                }
+            }
 
             if(new_wsp>wsp)
             {
@@ -41,12 +57,14 @@ sort::sort(int capital, char attitude)
     else
     {
         //else api request
+        //else algorithms
+        // else wsp
 
     }
 
 };
 
-double recentdiff(const std::vector<double>& inputArray) {
+double sort::recentdiff(const std::vector<double>& inputArray) {
     int size = inputArray.size();
     if (size < 4) {
         std::cerr << "Wektor musi zawierać przynajmniej 4 wartości!" << std::endl;
@@ -59,11 +77,11 @@ double recentdiff(const std::vector<double>& inputArray) {
     }
     double average = sum / 3.0;
     double lastValue = inputArray[size - 1];
-    double difference = lastValue - average;
+    double difference = lastValue / average;
     return difference;
 }
 
-bool isrising(const std::vector<double>& inputArray)
+bool sort::isrising(const std::vector<double>& inputArray)
 {
 
     double result =0.0;
@@ -94,7 +112,7 @@ bool isrising(const std::vector<double>& inputArray)
     return false ;
 };
 
-bool liquidity(const std::vector<double>& inputArray)
+bool sort::islqrise(const std::vector<double>& inputArray)
 {
     int size = inputArray.size();
     double sum = 0.0;
@@ -120,8 +138,9 @@ bool liquidity(const std::vector<double>& inputArray)
     }
 
 };
-
+/*
 brand sort::best_match()
 {
     return brand(char brand_name);
 }
+*/

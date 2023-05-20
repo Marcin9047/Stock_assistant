@@ -4,7 +4,7 @@ na tej podstawie wybiera optymalne firmy
 */
 #include <iostream>
 #include <vector>
-#include "../data/user.h"
+//#include "../data/user.h"
 
 class sort
 {
@@ -15,8 +15,8 @@ class sort
     sort(int capital, char attitude);
     double recentdiff(const std::vector<double>& inputArray);
     bool isrising(const std::vector<double>& inputArray);
-    bool liquidity(const std::vector<double>& inputArray);
-    brand best_match();
+    bool islqrise(const std::vector<double>& inputArray);//return true if volumen raisings
+//    brand best_match();
 
 
 };
