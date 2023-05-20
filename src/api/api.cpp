@@ -67,7 +67,7 @@ std::string Api::data_from_url() {
 }
 
 void Api::save_data_to_json(){
-    std::ofstream file("file.json");
+    std::ofstream file("log/api_data.json");
     file << data_from_url();
     file.close();
 }
