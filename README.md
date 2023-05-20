@@ -39,7 +39,8 @@ Uzyskaliśmy schemat budowy aplikacji. Wybraliśmy odpowiednią bibliotekę inte
 - `libcurl` - biblioteka umożliwiająca wysyłanie zapytań HTTP i pobieranie danych z serwerów.
     - Linux: `sudo apt-get install libcurl4-openssl-dev`
 
-- TBA
+- `nlohmann/json.hpp` - obsługa danych w formacie json
+    - Linux: `sudo apt-get install nlohmann-json3-dev`
 
 
 # Zaimplementowane klasy
@@ -49,7 +50,8 @@ Uzyskaliśmy schemat budowy aplikacji. Wybraliśmy odpowiednią bibliotekę inte
 - `class Api` - obsługuje wysyłanie zapytań HTTP, pobieranie danych i odpowiedni ich zapis
 
     - Jeśli posiadamy odpowiednio przygotowany URL możemy wykorzystać tę klasę podając URL w konstruktorze 
-    - `get_data()` - zwraca string danych
+    - Każdy request API oraz error zostanie zapisany do pliku `api_log.txt` wraz z datą i godziną
+    - `get_data()` - zwraca string danych w formacie json
     - `save_data_to_json()` - zapisuje dane do pliku .json
 
 - `class ApiCC` - dziedziczy po `class Api`. Odpowiada za tworzenie zapytań odpowiednich dla cryptocompare.com
@@ -59,6 +61,7 @@ Uzyskaliśmy schemat budowy aplikacji. Wybraliśmy odpowiednią bibliotekę inte
         - `"daily"` dane historyczne próbkowane dziennie (domyślnie 30 dni)
         - `"hourly"` dane historyczne próbkowane godzinowo (domyślnie 7 dni)
         - `"minute"` dane historyczne próbkowane minutowo (domyślnie 1 dzień)
+        - `"symbol"` zwraca symbole wszystkich kryptowalut dostępnych na stronie
 
     - `set_crypro()` - ustawia symbol krypto np. "BTC", "ETH", ...
     - `set_currency()` - ustawia walutę np. "USD", "PLN", ...
