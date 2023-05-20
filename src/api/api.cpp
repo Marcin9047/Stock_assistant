@@ -67,6 +67,13 @@ void Api::save_data_to_json(){
 
 void Api::save_url_to_log(const std::string &fileName, const std::string &line)
 {
+    struct stat info;
+    if(stat("log", &info) != 0 || !(info.st_mode & S_IFDIR)) {
+        system("mkdir log");
+    }
+
     std::ofstream file(fileName, std::ios::app);
-    file << line << std::endl;
+    auto t = std::time(nullptr);
+    auto tm = *std::localtime(&t);
+    file << "[" << std::put_time(&tm, "%Y-%m-%d %H:%M:%S") << "] " << line << std::endl;
 }

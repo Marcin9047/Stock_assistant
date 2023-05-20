@@ -7,6 +7,9 @@
 #include <map>
 #include <chrono>
 #include <memory>
+#include <iomanip>
+#include <ctime>
+#include <sys/stat.h>
 #include <curl/curl.h>
 
 class Api {

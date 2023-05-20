@@ -4,6 +4,6 @@
 TEST_CASE("Przykładowy test") {
     SECTION("Przykładowa sekcja - pass") {
         
-        REQUIRE(0==0);
+        REQUIRE(true==1);
     }
 }
