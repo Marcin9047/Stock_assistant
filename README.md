@@ -95,5 +95,6 @@ Uzyskaliśmy schemat budowy aplikacji. Wybraliśmy odpowiednią bibliotekę inte
     - `get_time()` - zwraca czas rejestru,
     - `get_high_value() / get_low_value()` - zwraca parametry rejestru.
 
+## Sort
 
 ## TBA
