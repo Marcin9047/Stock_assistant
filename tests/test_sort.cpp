@@ -47,7 +47,7 @@ double recentdiff(const std::vector<double>& values) {
     }
     double average = sum / 3.0;
     double lastValue = values[size - 1];
-    double difference = lastValue - average;
+    double difference = lastValue/average;
     return difference;
 }
 
@@ -103,13 +103,13 @@ TEST_CASE("recentdiff method") {
     SECTION("increased") {
         std::vector<double> values = {1.0, 2.0, 3.0, 4.0, 5.0};
         double result = recentdiff(values);
-        REQUIRE(result == Approx(2.0));
+        REQUIRE(result == 5.0/3.0);
     }
 
     SECTION("decreased") {
         std::vector<double> values = {5.0, 4.0, 3.0, 2.0, 1.0};
         double result = recentdiff(values);
-        REQUIRE(result == Approx(-2.0));
+        REQUIRE(result == 1.0/3.0);
     }
 }
 
