@@ -13,8 +13,9 @@ class sort
 
     public:
     sort(int capital, char attitude);
-    double recentdiff(const std::vector<double>& values);
+    double recentdiff(const std::vector<double>& inputArray);
     bool isrising(const std::vector<double>& inputArray);
+    bool liquidity(const std::vector<double>& inputArray);
     brand best_match();
 
 

@@ -46,8 +46,8 @@ sort::sort(int capital, char attitude)
 
 };
 
-double recentdiff(const std::vector<double>& values) {
-    int size = values.size();
+double recentdiff(const std::vector<double>& inputArray) {
+    int size = inputArray.size();
     if (size < 4) {
         std::cerr << "Wektor musi zawierać przynajmniej 4 wartości!" << std::endl;
         return 0.0;
@@ -55,10 +55,10 @@ double recentdiff(const std::vector<double>& values) {
 
     double sum = 0.0;
     for (int i = size - 2; i >= size - 4; --i) {
-        sum += values[i];
+        sum += inputArray[i];
     }
     double average = sum / 3.0;
-    double lastValue = values[size - 1];
+    double lastValue = inputArray[size - 1];
     double difference = lastValue - average;
     return difference;
 }
@@ -92,6 +92,33 @@ bool isrising(const std::vector<double>& inputArray)
         return true;
     }
     return false ;
+};
+
+bool liquidity(const std::vector<double>& inputArray)
+{
+    int size = inputArray.size();
+    double sum = 0.0;
+
+    if (size < 4) {
+        std::cout << "Tablica wejściowa musi mieć co najmniej 2 elementy!" << std::endl;
+        return false;
+    }
+
+    for (int i = size - 2; i >= size - 4; --i) {
+        sum += inputArray[i];
+    }
+
+    double average = sum / 3.0;
+    double lastValue = inputArray[size - 1];
+    double difference = lastValue - average;
+    if(difference>0){
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+
 };
 
 brand sort::best_match()
