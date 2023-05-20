@@ -29,5 +29,5 @@ void ApiNasdaq::create_url() {
     
     
 
-    save_url_to_log(log_path, url);
+    log_event(url);
 }

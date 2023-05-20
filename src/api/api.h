@@ -23,7 +23,7 @@ protected:
     std::string url;
     std::map<std::string, std::string> keys;
     std::string log_path = "log/api_log.txt";
-    void save_url_to_log(const std::string& fileName, const std::string& line);
+    void log_event(const std::string& line);
 
 private:
     virtual void create_url();

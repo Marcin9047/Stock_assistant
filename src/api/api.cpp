@@ -37,26 +37,32 @@ std::string Api::data_from_url() {
     }
 
     std::unique_ptr<CURL, CurlDeleter> curl(curl_easy_init());
-    if(curl) {
-        std::string response_string;
-        curl_easy_setopt(curl.get(), CURLOPT_URL, url.c_str());
-        curl_easy_setopt(curl.get(), CURLOPT_WRITEFUNCTION, writeFunction);
-        curl_easy_setopt(curl.get(), CURLOPT_WRITEDATA, &response_string);
-        CURLcode res = curl_easy_perform(curl.get());
-        if(res != CURLE_OK) {
-            throw std::runtime_error(std::string("curl_easy_perform() failed: ") 
-                                     + curl_easy_strerror(res));
-        }
-
-        long response_code;
-        curl_easy_getinfo(curl.get(), CURLINFO_RESPONSE_CODE, &response_code);
-        if(response_code >= 400) {
-            throw std::runtime_error("HTTP error: " + std::to_string(response_code));
-        }
-
-        return response_string;
+    if (!curl)
+    {
+        log_event("Failed to initialize cURL");
+        throw std::runtime_error("Failed to initialize cURL");
     }
-    throw std::runtime_error("Failed to initialize cURL");
+    
+    std::string response_string;
+    curl_easy_setopt(curl.get(), CURLOPT_URL, url.c_str());
+    curl_easy_setopt(curl.get(), CURLOPT_WRITEFUNCTION, writeFunction);
+    curl_easy_setopt(curl.get(), CURLOPT_WRITEDATA, &response_string);
+    CURLcode res = curl_easy_perform(curl.get());
+    if(res != CURLE_OK) {
+        std::string error_message = std::string("curl_easy_perform() failed: ") + curl_easy_strerror(res);
+        log_event(error_message);
+        throw std::runtime_error(error_message);
+    }
+
+    long response_code;
+    curl_easy_getinfo(curl.get(), CURLINFO_RESPONSE_CODE, &response_code);
+    if(response_code >= 400) {
+        std::string error_message = "HTTP error: " + std::to_string(response_code);
+        log_event(error_message);
+        throw std::runtime_error(error_message);
+    }
+
+    return response_string;
 }
 
 void Api::save_data_to_json(){
@@ -65,14 +71,14 @@ void Api::save_data_to_json(){
     file.close();
 }
 
-void Api::save_url_to_log(const std::string &fileName, const std::string &line)
+void Api::log_event(const std::string &line)
 {
     struct stat info;
     if(stat("log", &info) != 0 || !(info.st_mode & S_IFDIR)) {
         system("mkdir log");
     }
 
-    std::ofstream file(fileName, std::ios::app);
+    std::ofstream file(log_path, std::ios::app);
     auto t = std::time(nullptr);
     auto tm = *std::localtime(&t);
     file << "[" << std::put_time(&tm, "%Y-%m-%d %H:%M:%S") << "] " << line << std::endl;

@@ -45,5 +45,5 @@ void ApiCC::create_url() {
 
     // url += "&api_key=" + keys["cc_API_Key"];
 
-    save_url_to_log(log_path, url);
+    log_event(url);
 }
