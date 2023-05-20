@@ -3,10 +3,10 @@ CXXFLAGS = -Wall -Wextra -std=c++17
 LDFLAGS = -lcurl # dodać dodatkowe biblioteki
 
 # Ścieżki do plików nagłówkowych
-INCLUDES = -Isrc/api # dodać -Isrc/folder
+INCLUDES = -Isrc/api -Isrc/sort # dodać -Isrc/folder
 
 # Pliki źródłowe
-SRCS = $(wildcard src/api/*.cpp) main.cpp # dodać $(wildcard src/folder/*.cpp)
+SRCS = $(wildcard src/api/*.cpp) $(wildcard src/sort/*.cpp) main.cpp # dodać $(wildcard src/folder/*.cpp)
 
 OBJS = $(addprefix build/,$(notdir $(SRCS:.cpp=.o)))
 TEST_SRCS = $(wildcard tests/*.cpp)
@@ -27,6 +27,9 @@ build/%.o: src/api/%.cpp
 #
 # build/%.o: src/folder/%.cpp
 # 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+build/%.o: src/sort/%.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
 build/%.o: tests/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
