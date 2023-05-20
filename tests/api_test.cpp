@@ -21,6 +21,13 @@ TEST_CASE("Api class") {
 }
 
 TEST_CASE("ApiCC class") {
+    SECTION("Get all symbols"){
+        ApiCC api_cc;
+        api_cc.set_type("symbols");
+        // api_cc.save_data_to_json();
+        std::string data = api_cc.get_data();
+        REQUIRE(!data.empty());
+    }
     SECTION("Actual price test") {
         ApiCC api_cc;
         api_cc.set_type("single");
@@ -29,4 +36,5 @@ TEST_CASE("ApiCC class") {
         std::string data = api_cc.get_data();
         REQUIRE(!data.empty());
     }
+
 }

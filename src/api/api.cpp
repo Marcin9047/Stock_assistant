@@ -35,6 +35,7 @@ std::string Api::data_from_url() {
     if (url.empty()) {
         create_url();
     }
+    log_event(url);
 
     std::unique_ptr<CURL, CurlDeleter> curl(curl_easy_init());
     if (!curl)

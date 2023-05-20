@@ -4,11 +4,12 @@ ApiCC::ApiCC()
 {
     urls = {
         {"crypto compare", "https://min-api.cryptocompare.com/data/"},
-        {"single","price?"},
-        {"multi","pricemulti?"},
+        {"single", "price?"},
+        {"multi", "pricemulti?"},
         {"daily", "v2/histoday?"},
         {"hourly", "v2/histohour?"},
         {"minute", "v2/histominute?"},
+        {"symbols", "all/coinlist?summary=true"},
     };
 }
 
@@ -41,9 +42,10 @@ void ApiCC::create_url() {
         auto now = std::chrono::system_clock::now();
         auto now_time_t = std::chrono::system_clock::to_time_t(now);
         url += std::to_string(now_time_t);
+    } else if (type == "symbols") {
+        ;
     }
 
     // url += "&api_key=" + keys["cc_API_Key"];
 
-    log_event(url);
 }
