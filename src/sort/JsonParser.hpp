@@ -131,4 +131,54 @@ public:
         return closeList;
     }
 
+    std::vector<double> getOpenVector(const std::vector<DataPoint>& dataPoints) {
+        std::vector<double> openList;
+
+        for (const auto& dp : dataPoints) {
+            openList.push_back(dp.open);
+        }
+
+        return openList;
+    }
+
+    std::vector<double> getHighVector(const std::vector<DataPoint>& dataPoints) {
+        std::vector<double> highList;
+
+        for (const auto& dp : dataPoints) {
+           highList.push_back(dp.high);
+        }
+
+        return highList;
+    }
+
+    std::vector<double> getLowVector(const std::vector<DataPoint>& dataPoints) {
+        std::vector<double> lowList;
+
+        for (const auto& dp : dataPoints) {
+           lowList.push_back(dp.low);
+        }
+
+        return lowList;
+    }
+
+    std::vector<double> getVolumeFromVector(const std::vector<DataPoint>& dataPoints) {
+        std::vector<double> volumeFromList;
+
+        for (const auto& dp : dataPoints) {
+           volumeFromList.push_back(dp.volumeFrom);
+        }
+
+        return volumeFromList;
+    }
+
+    std::vector<double> getVolumeToVector(const std::vector<DataPoint>& dataPoints) {
+        std::vector<double> volumeToList;
+
+        for (const auto& dp : dataPoints) {
+           volumeToList.push_back(dp.volumeTo);
+        }
+
+        return volumeToList;
+    }
+
 };
