@@ -2,6 +2,7 @@
 #include "catch.hpp"
 #include "../src/api/api.h"
 #include "../src/api/api_cc.h"
+#include "../src/api/api_nasdaq.h"
 #include <nlohmann/json.hpp>
 
 TEST_CASE("Api class tests") {
@@ -66,5 +67,23 @@ TEST_CASE("ApiCC class tests") {
         REQUIRE(root["Data"].contains("Data"));
         REQUIRE(root["Data"]["Data"].is_array());
         REQUIRE(root["Data"]["Data"][0].contains("time"));
+    }
+}
+
+TEST_CASE("ApiNasdaq class tests") {
+    SECTION("nasdaq") {
+        ApiNasdaq api_nasdaq;
+        api_nasdaq.set_type("databases");
+        // api_nasdaq.save_data_to_json();
+        std::string data = api_nasdaq.get_data();
+        REQUIRE_FALSE(data.empty());
+    }
+    SECTION("api nasdaq ") {
+        ApiNasdaq api_nasdaq;
+        api_nasdaq.set_company("FB");
+        api_nasdaq.set_database("WIKI");
+        // api_nasdaq.save_data_to_json();
+        std::string data = api_nasdaq.get_data();
+        REQUIRE_FALSE(data.empty());
     }
 }

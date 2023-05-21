@@ -7,15 +7,14 @@ class ApiNasdaq: public Api
 {
 public:
     ApiNasdaq(/* args */);
-    // void set_type(std::string new_type);
-    // void set_crypto(std::string new_crypto);
-    // void set_currency(std::string new_currency);
+    void set_type(std::string new_type);
+    void set_company(std::string new_company);
+    void set_database(std::string new_database);
 
 private:
-    // std::string type;
-    // std::string crypto; 
-    // std::string currency;
-    // std::string limit = "2000";
+    std::string type;
+    std::string company;
+    std::string database;
     std::map<std::string, std::string> urls;
     void create_url() override;
 };
