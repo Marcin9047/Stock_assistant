@@ -68,7 +68,10 @@ Uzyskaliśmy schemat budowy aplikacji. Wybraliśmy odpowiednią bibliotekę inte
 
 - `class ApiNasdaq` - dziedziczy po `class Api`. Zapytania odpowiednie dla nasdaq.com
 
-    - TBA
+    - `set_type()` - ustawia typ pobieranych danych
+        - `"databases"` pobiera dane o dostępnych bazach danych (wewnątrz nich są datasets)
+    - `set_database` - ustawia wybraną bazę danych np. `WIKI` ...
+    - `set_company` - ustawia wybraną firmę np. `FB` ...
 
 - TBA
 
