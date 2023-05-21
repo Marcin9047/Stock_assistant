@@ -77,7 +77,12 @@ TEST_CASE("ApiNasdaq class tests") {
         // api_nasdaq.save_data_to_json();
         std::string data = api_nasdaq.get_data();
         REQUIRE_FALSE(data.empty());
+
+        auto root = nlohmann::json::parse(data);
+        REQUIRE_FALSE(root.is_null());
+        REQUIRE(root.contains("databases"));
     }
+
     SECTION("api nasdaq ") {
         ApiNasdaq api_nasdaq;
         api_nasdaq.set_company("FB");
@@ -85,5 +90,22 @@ TEST_CASE("ApiNasdaq class tests") {
         // api_nasdaq.save_data_to_json();
         std::string data = api_nasdaq.get_data();
         REQUIRE_FALSE(data.empty());
+
+        auto root = nlohmann::json::parse(data);
+        REQUIRE_FALSE(root.is_null());
+        REQUIRE(root.contains("dataset_data"));
     }
+
+    // SECTION("api nasdaq WARSAWSE") {
+    //     ApiNasdaq api_nasdaq;
+    //     api_nasdaq.set_database("WARSAWSE");
+    //     api_nasdaq.set_company("MBANK");
+    //     api_nasdaq.save_data_to_json();
+    //     std::string data = api_nasdaq.get_data();
+    //     REQUIRE_FALSE(data.empty());
+
+    //     auto root = nlohmann::json::parse(data);
+    //     REQUIRE_FALSE(root.is_null());
+    //     REQUIRE(root.contains("dataset_data"));
+    // }
 }

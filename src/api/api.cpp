@@ -15,6 +15,8 @@ Api::Api(std::string new_url)
         // Keys below are private and need to be changed before going public
         {"cc_API_Key", "9c4354165cddf934ea4f93cb003060ff783d64e074bb3065f8dce7b999d49ba7"},
         {"NASDAQ_API_Key", "iSWZmxQeJPXMNLrpiBrf"}
+        // iSWZmxQeJPXMNLrpiBrf
+        // zrBoJ9fp95e8nBA6EuhC
     };
 }
 

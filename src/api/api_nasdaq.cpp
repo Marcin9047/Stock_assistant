@@ -33,6 +33,7 @@ void ApiNasdaq::create_url() {
     url = urls["NASDAQ"];
     if (type == "databases"){
         url += type;
+        // url += "databases/WIKI/codes.json";
     } else {
         url += "datasets/" + database + "/";
         url += company + "/data.json";
