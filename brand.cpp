@@ -1,11 +1,15 @@
 #include "brand.h"
+#include <iostream>
+#include <string>
 
-brand::brand(char name)
+
+
+brand::brand(std::string name)
 {
     brand_name = name;
 };
 
-char brand::get_brand()
+std::string brand::get_brand()
 {
     return brand_name;
 }
@@ -15,9 +19,9 @@ void brand::clear_before(int time)
 
 };
 
-void brand::add_raport(data raport)
+void operator<<(brand& b1, data<class T>& d1)
 {
-    history.push_back(raport);
+    b1.history.push_back(d1);
 };
 
 float brand::last_value()

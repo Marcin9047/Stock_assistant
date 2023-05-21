@@ -30,7 +30,7 @@ void user::add_favourite(brand one)
     favourites.push_back(one);
 };
 
-void user::delate_favourite(char name)
+void user::delate_favourite(std::string name)
 {
     std::vector<brand> new_favourites;
     for (int i=0; i <= favourites.size(); i++)
