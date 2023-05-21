@@ -109,6 +109,8 @@ Uzyskaliśmy schemat budowy aplikacji. Wybraliśmy odpowiednią bibliotekę inte
     - `get(..)Vector` - analogicznie do get(..)List zwraca wektor
     
 
+- `class NASDAQ_pars` dziedziczy po `class JsonParser`. Dekompozycja pliku do wektora danych odpowiednia formatu .json zwracanego przez `class ApiNasdaq`
+
 
 - `class sort` - dokonuje wyboru odpowiedniej giełdy dla użytkownika na podstawie jego preferencji oraz aktualnej sytuacji giełdowej
     - `recentdiff()` - zwraca iloraz ostatniej wartości do średniej z 3 ostatnich cykli
