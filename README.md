@@ -97,4 +97,23 @@ Uzyskaliśmy schemat budowy aplikacji. Wybraliśmy odpowiednią bibliotekę inte
 
 ## Sort
 
+- `class JsonFile` - obsługuje odczyt i zapis plików .json
+    - `read()` - zwraca string danych w formacie json
+    - `write()` - zapisuje dane do pliku .json
+
+
+- `class JsonParser` - Dokonuje dekompozycji pliku .json  
+    - `parseJSON()` - zwraca wektor danych vector<DataPoint> posiadający
+    atrybuty .time .open .close .high .low .volumeTo .volumeFrom
+    - `get(..)List` - zwraca listy porządanych wartości (Time, Open, Close, High, Low, VolumeTo, VolumeFrom)    
+    - `get(..)Vector` - analogicznie do get(..)List zwraca wektor
+    
+
+
+- `class sort` - dokonuje wyboru odpowiedniej giełdy dla użytkownika na podstawie jego preferencji oraz aktualnej sytuacji giełdowej
+    - `recentdiff()` - zwraca iloraz ostatniej wartości do średniej z 3 ostatnich cykli
+    - `isrising()` - zwraca prawde jeśli wykres jest globalnie rosnący
+    - `islqrising()` - zwraca prawdę jeśli ostatnia ilość wymienionych wolumenów jest większa od średniej z 3 ostatnich cykli
+
+
 ## TBA
