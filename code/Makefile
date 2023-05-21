@@ -16,10 +16,10 @@
 
 EXE = stock_assistant
 IMGUI_DIR = ../
-SOURCES = main.cpp
-SOURCES += $(IMGUI_DIR)/imgui/imgui.cpp $(IMGUI_DIR)/imgui/imgui_demo.cpp $(IMGUI_DIR)/imgui/imgui_draw.cpp $(IMGUI_DIR)/imgui/imgui_tables.cpp $(IMGUI_DIR)/imgui/imgui_widgets.cpp
+SOURCES = main.cpp windows.cpp
+SOURCES += $(IMGUI_DIR)/imgui/imgui.cpp $(IMGUI_DIR)/imgui/imgui_demo.cpp $(IMGUI_DIR)/imgui/imgui_draw.cpp $(IMGUI_DIR)/imgui/imgui_tables.cpp $(IMGUI_DIR)/imgui/imgui_widgets.cpp 
 SOURCES += $(IMGUI_DIR)/backends/imgui_impl_glfw.cpp $(IMGUI_DIR)/backends/imgui_impl_opengl3.cpp
-SOURCES += $(IMGUI_DIR)/implot/implot.cpp $(IMGUI_DIR)/implot/implot_items.cpp 
+SOURCES += $(IMGUI_DIR)/implot/implot.cpp $(IMGUI_DIR)/implot/implot_items.cpp $(IMGUI_DIR)/implot/implot_candlestick.cpp 
 OBJS = $(addsuffix .o, $(basename $(notdir $(SOURCES))))
 UNAME_S := $(shell uname -s)
 LINUX_GL_LIBS = -lGL
@@ -73,3 +73,5 @@ $(EXE): $(OBJS)
 
 clean:
 	rm -f $(EXE) $(OBJS)
+
+.phony: all clean
