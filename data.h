@@ -1,7 +1,7 @@
 #pragma once
 #include <istream>
 
-template <typename T>
+template <class T>
 class data
 {
 T read_time;

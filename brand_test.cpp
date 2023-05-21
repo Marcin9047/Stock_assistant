@@ -10,32 +10,32 @@
 
 TEST_CASE("Brand class") {
     SECTION("Get_brand name") {
-        brand b1("Crypto");
+        brand_crypto b1("Crypto");
         REQUIRE(b1.get_brand() == "Crypto");
     }
 
     SECTION("clear before test") {
-        brand b1("Crypto");
+        brand_crypto b1("Crypto");
         REQUIRE(0 == 0);
     }
 
     SECTION("<< operator test") {
-        brand b1("Crypto");
+        brand_crypto b1("Crypto");
         REQUIRE(0 == 0);
     }
 
     SECTION("Last value test") {
-        brand b1("Crypto");
+        brand_crypto b1("Crypto");
         REQUIRE(0 == 0);
     }
 
     SECTION("last read time test") {
-        brand b1("Crypto");
+        brand_crypto b1("Crypto");
         REQUIRE(0 == 0);
     }
 
     SECTION("is rising test") {
-        brand b1("Crypto");
+        brand_crypto b1("Crypto");
         REQUIRE(0 == 0);
     }
 }

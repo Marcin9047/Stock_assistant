@@ -2,8 +2,9 @@
 #include "brand.h"
 #include <vector>
 #include <iostream>
+#include <string>
 
-user::user(int capital, std::vector<brand> fav, char attitude)
+user::user(int capital, std::vector<std::string> fav, char attitude)
 {
     user_capital = capital;
     favourites = fav;
@@ -25,30 +26,30 @@ void user::get_daily_info()
 {
 };
 
-void user::add_favourite(brand one)
+void user::add_favourite(std::string one)
 {
     favourites.push_back(one);
 };
 
 void user::delate_favourite(std::string name)
 {
-    std::vector<brand> new_favourites;
+    std::vector<std::string> new_favourites;
     for (int i=0; i <= favourites.size(); i++)
     {
-        if (favourites[i].get_brand() != name)
-        {
-            new_favourites.push_back(favourites[i]);
-        }
+        // if (favourites[i].get_brand() != name)
+        // {
+        //     new_favourites.push_back(favourites[i]);
+        // }
     }
     favourites = new_favourites;
 };
 
-std::vector<brand> user::get_favourites()
+std::vector<std::string> user::get_favourites()
 {
     return favourites;
 };
 
-brand user::get_suggestions()
+std::vector<std::string> user::get_suggestions()
 {
 
 }

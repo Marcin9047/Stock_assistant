@@ -3,21 +3,21 @@
 
 class user
 {
-    std::vector<brand> favourites;
+    std::vector<std::string> favourites;
     char trading_attitude;
     int user_capital;
 
     private:
     public:
         user() = default;
-        user(int capital, std::vector<brand> fav, char attitude);
+        user(int capital, std::vector<std::string> fav, char attitude);
         int get_capital();
         void set_capital(int value);
         void get_daily_info();
-        void add_favourite(brand one);
+        void add_favourite(std::string one);
         void delate_favourite(std::string name);
-        std::vector<brand> get_favourites();
-        brand get_suggestions();
+        std::vector<std::string> get_favourites();
+        std::vector<std::string> get_suggestions();
 };
 
 class admin: public user

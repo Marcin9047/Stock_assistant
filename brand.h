@@ -5,23 +5,48 @@
 #include <iostream>
 #include <string>
 
+template <class T>
 class brand
 {
     std::string brand_name;
-    data<int> last_read;
-    std::vector<data<int>> history;
+    data<T> last_read;
+    std::vector<data<T>> history;
     private:
-        void clear_before(int time);
+        void clear_before(int time)
+        {
+
+        }
     public:
-        brand(std::string name);
-        std::string get_brand();
-        friend void operator<<(brand& b1, data & d1);
-        float last_value();
-        float last_read_time();
-        bool is_rising();
+        brand(std::string name)
+        {
+            brand_name = name;
+        };
+        std::string get_brand()
+        {
+            return brand_name;
+        };
+        friend void operator<<(brand<T>& b1, data<T> & d1)
+        {
+            b1.history.push_back(d1);
+        };
+        float last_value()
+        {
+            return 0;
+        };
+        float last_read_time()
+        {
+            return 0;
+        }
+        bool is_rising()
+        {
+            return 0;
+        }
     };
 
-// class crypto: public brand
+typedef brand<int> brand_crypto;
+typedef brand<std::string> brand_nasdaq;
+
+// class brand_crypto: public brand
 // {
 
 // };
