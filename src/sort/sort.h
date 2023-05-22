@@ -9,14 +9,14 @@ na tej podstawie wybiera optymalne firmy
 class sort
 {
     private:
-    char brand_name;
+    std::vector<std::string> brand_name;
 
     public:
     sort(int capital, char attitude);
     double recentdiff(const std::vector<double>& inputArray);
     bool isrising(const std::vector<double>& inputArray);
     bool islqrise(const std::vector<double>& inputArray);//return true if volumen raisings
-//    brand best_match();
+//    std::vector<brand> best_match();
 
 
 };
