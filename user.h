@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <string>
 
 class user
 {
@@ -8,6 +9,9 @@ class user
     int user_capital;
 
     private:
+    protected:
+        std::string login;
+        std::string password;
     public:
         user() = default;
         user(int capital, std::vector<std::string> fav, char attitude);

@@ -36,13 +36,24 @@ TEST_CASE("Brand class") {
     }
 
     SECTION("last read time test") {
+        crypto_data d1(3221, 32.1, 12.3, 10, 21, 34, 15.7, '$');
+        crypto_data d2(3321, 32.1, 12.3, 10, 21, 34, 17.5, '$');
         brand_crypto b1("Crypto");
-        REQUIRE(0 == 0);
+        b1 << d1;
+        b1 << d2;
+        REQUIRE(b1.last_read_time() == 3321);
     }
 
     SECTION("is rising test") {
         brand_crypto b1("Crypto");
-        REQUIRE(0 == 0);
+        crypto_data d1(3221, 32.1, 12.3, 10, 21, 34, 15.7, '$');
+        crypto_data d2(3321, 32.1, 12.3, 10, 21, 34, 17.5, '$');
+        b1 << d1;
+        b1 << d2;
+        REQUIRE(b1.is_rising() == true);
+        crypto_data d3(3321, 32.1, 12.3, 10, 21, 34, 11.5, '$');
+        b1 << d3;
+        REQUIRE(b1.is_rising() == false);
     }
 }
 

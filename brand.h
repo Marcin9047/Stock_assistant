@@ -8,6 +8,7 @@
 template <class T>
 class brand
 {
+    bool rising;
     std::string brand_name;
     data<T> last_read;
     std::vector<data<T>> history;
@@ -31,6 +32,14 @@ class brand
             {
                 b1.last_read.get_time();
                 b1.history.push_back(b1.last_read);
+                if (d1.get_close() > b1.last_read.get_close())
+                {
+                    b1.rising = true;
+                }
+                else 
+                {
+                    b1.rising = false;
+                };
                 b1.last_read = d1;
             }
             catch (...)
@@ -49,7 +58,7 @@ class brand
         }
         bool is_rising()
         {
-            return 0;
+            return rising;
         }
     };
 
