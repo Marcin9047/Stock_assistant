@@ -21,12 +21,18 @@ TEST_CASE("Brand class") {
 
     SECTION("<< operator test") {
         brand_crypto b1("Crypto");
-        REQUIRE(0 == 0);
+        crypto_data d1(3221, 32.1, 12.3, 10, 21, 34, 15.7, '$');
+        b1 << d1;
+        REQUIRE(b1.last_read_time() == 3221);
     }
 
     SECTION("Last value test") {
+        crypto_data d1(3221, 32.1, 12.3, 10, 21, 34, 15.7, '$');
+        crypto_data d2(3321, 32.1, 12.3, 10, 21, 34, 17.5, '$');
         brand_crypto b1("Crypto");
-        REQUIRE(0 == 0);
+        b1 << d1;
+        b1 << d2;
+        REQUIRE(b1.last_value() == 17.5);
     }
 
     SECTION("last read time test") {

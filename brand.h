@@ -27,15 +27,25 @@ class brand
         };
         friend void operator<<(brand<T>& b1, data<T> & d1)
         {
-            b1.history.push_back(d1);
+            try 
+            {
+                b1.last_read.get_time();
+                b1.history.push_back(b1.last_read);
+                b1.last_read = d1;
+            }
+            catch (...)
+            {
+                b1.last_read = d1;
+            };
+            
         };
         float last_value()
         {
-            return 0;
+            return last_read.get_close();
         };
-        float last_read_time()
+        int last_read_time()
         {
-            return 0;
+            return last_read.get_time();
         }
         bool is_rising()
         {

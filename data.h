@@ -39,6 +39,10 @@ public:
     {
         return low_value;
     };
+    float get_close()
+    {
+        return close_value;
+    }
 };
 
 
