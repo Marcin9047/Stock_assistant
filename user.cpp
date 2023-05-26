@@ -34,13 +34,13 @@ void user::add_favourite(std::string one)
 void user::delate_favourite(std::string name)
 {
     std::vector<std::string> new_favourites;
-    for (int i=0; i <= favourites.size(); i++)
-    {
-        // if (favourites[i].get_brand() != name)
-        // {
-        //     new_favourites.push_back(favourites[i]);
-        // }
-    }
+    // for (int i=0; i <= favourites.size(); i++)
+    // // {
+    // //     if (favourites[i].get_brand() != name)
+    // //     {
+    // //         new_favourites.push_back(favourites[i]);
+    // //     }
+    // // }
     favourites = new_favourites;
 };
 

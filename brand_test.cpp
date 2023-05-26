@@ -26,6 +26,18 @@ TEST_CASE("Brand class") {
         REQUIRE(b1.last_read_time() == 3221);
     }
 
+    SECTION(">> operator test") {
+        brand_crypto b1("Crypto");
+        crypto_data d1(3221, 32.1, 12.3, 10, 21, 34, 15.7, '$');
+        b1 << d1;
+        std::string s1;
+        b1 >> s1;
+        std::string result = "3221";
+        result += " ";  // Dodaj przerwę za pomocą operatora konkatenacji
+        result.append("15.70"); 
+        REQUIRE(s1 == result);
+    }
+
     SECTION("Last value test") {
         crypto_data d1(3221, 32.1, 12.3, 10, 21, 34, 15.7, '$');
         crypto_data d2(3321, 32.1, 12.3, 10, 21, 34, 17.5, '$');

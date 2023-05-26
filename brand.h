@@ -48,6 +48,15 @@ class brand
             };
             
         };
+        friend void operator>>(brand<T> & d1, std::string &s1)
+        {
+            std::ostringstream ss;
+            ss << std::fixed << std::setprecision(2) << d1.last_value();
+            std::string value = ss.str();
+
+            std::string result = std::to_string(d1.last_read_time()) + " " + value + "\0";
+            s1 = result;
+        };
         float last_value()
         {
             return last_read.get_close();

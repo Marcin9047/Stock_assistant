@@ -16,7 +16,7 @@ private:
 public:
     data() = default;
     data(T time, float high, float low, float open, float vol_from,
-    float vol_to, float close, char conversion)
+    float vol_to, double close, char conversion)
     {
             read_time = time;
            conversionType = conversion;
