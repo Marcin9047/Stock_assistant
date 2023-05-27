@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = -Wall -Wextra -std=c++17 # -Wformat -g
-# LDFLAGS = -lcurl -lglfw -lGL -ldl # dodać dodatkowe biblioteki
+LDFLAGS = -lcurl -lglfw -lGL -ldl # dodać dodatkowe biblioteki
 
 # Ścieżki do plików nagłówkowych
 INCLUDES = -Isrc/api -Isrc/data # dodać -Isrc/folder

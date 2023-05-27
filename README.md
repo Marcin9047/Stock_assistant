@@ -39,7 +39,8 @@ Uzyskaliśmy schemat budowy aplikacji. Wybraliśmy odpowiednią bibliotekę inte
 - `libcurl` - biblioteka umożliwiająca wysyłanie zapytań HTTP i pobieranie danych z serwerów.
     - Linux: `sudo apt-get install libcurl4-openssl-dev`
 
-- TBA
+- `nlohmann/json.hpp` - obsługa danych w formacie json
+    - Linux: `sudo apt-get install nlohmann-json3-dev`
 
 
 # Zaimplementowane klasy
@@ -49,7 +50,8 @@ Uzyskaliśmy schemat budowy aplikacji. Wybraliśmy odpowiednią bibliotekę inte
 - `class Api` - obsługuje wysyłanie zapytań HTTP, pobieranie danych i odpowiedni ich zapis
 
     - Jeśli posiadamy odpowiednio przygotowany URL możemy wykorzystać tę klasę podając URL w konstruktorze 
-    - `get_data()` - zwraca string danych
+    - Każdy request API oraz error zostanie zapisany do pliku `api_log.txt` wraz z datą i godziną
+    - `get_data()` - zwraca string danych w formacie json
     - `save_data_to_json()` - zapisuje dane do pliku .json
 
 - `class ApiCC` - dziedziczy po `class Api`. Odpowiada za tworzenie zapytań odpowiednich dla cryptocompare.com
@@ -59,6 +61,7 @@ Uzyskaliśmy schemat budowy aplikacji. Wybraliśmy odpowiednią bibliotekę inte
         - `"daily"` dane historyczne próbkowane dziennie (domyślnie 30 dni)
         - `"hourly"` dane historyczne próbkowane godzinowo (domyślnie 7 dni)
         - `"minute"` dane historyczne próbkowane minutowo (domyślnie 1 dzień)
+        - `"symbol"` zwraca symbole wszystkich kryptowalut dostępnych na stronie
 
     - `set_crypro()` - ustawia symbol krypto np. "BTC", "ETH", ...
     - `set_currency()` - ustawia walutę np. "USD", "PLN", ...
@@ -91,6 +94,28 @@ Uzyskaliśmy schemat budowy aplikacji. Wybraliśmy odpowiednią bibliotekę inte
 - `class data` - przechowuje pojedyńcze rejestry uzyskane z rynku.
     - `get_time()` - zwraca czas rejestru,
     - `get_high_value() / get_low_value()` - zwraca parametry rejestru.
+
+## Sort
+
+- `class JsonFile` - obsługuje odczyt i zapis plików .json
+    - `read()` - zwraca string danych w formacie json
+    - `write()` - zapisuje dane do pliku .json
+
+
+- `class JsonParser` - Dokonuje dekompozycji pliku .json  
+    - `parseJSON()` - zwraca wektor danych vector<DataPoint> posiadający
+    atrybuty .time .open .close .high .low .volumeTo .volumeFrom
+    - `get(..)List` - zwraca listy porządanych wartości (Time, Open, Close, High, Low, VolumeTo, VolumeFrom)    
+    - `get(..)Vector` - analogicznie do get(..)List zwraca wektor
+    
+
+- `class NASDAQ_pars` dziedziczy po `class JsonParser`. Dekompozycja pliku do wektora danych odpowiednia formatu .json zwracanego przez `class ApiNasdaq`
+
+
+- `class sort` - dokonuje wyboru odpowiedniej giełdy dla użytkownika na podstawie jego preferencji oraz aktualnej sytuacji giełdowej
+    - `recentdiff()` - zwraca iloraz ostatniej wartości do średniej z 3 ostatnich cykli
+    - `isrising()` - zwraca prawde jeśli wykres jest globalnie rosnący
+    - `islqrising()` - zwraca prawdę jeśli ostatnia ilość wymienionych wolumenów jest większa od średniej z 3 ostatnich cykli
 
 
 ## TBA
