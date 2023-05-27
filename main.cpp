@@ -1,15 +1,14 @@
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
-#include "implot_candlestick.h"
-#include "windows.h"
+#include "src/interface/imgui/imgui.h"
+#include "src/interface/backends/imgui_impl_glfw.h"
+#include "src/interface/backends/imgui_impl_opengl3.h"
+#include "src/interface/implot/implot_candlestick.h"
+#include "src/interface/code/windows.h"
 #include <stdio.h>
 #include <GLFW/glfw3.h> // Will drag system OpenGL headers
-#include "implot.h"
-#include "implot_internal.h"
+#include "src/interface/implot/implot.h"
+#include "src/interface/implot/implot_internal.h"
 #include <string>
 #include <iostream>
-// #include "user.h"
 #include <vector>
 
 

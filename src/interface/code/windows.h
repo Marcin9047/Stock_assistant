@@ -1,5 +1,5 @@
-#include "implot.h"
-#include "implot_internal.h"
+#include "../implot/implot.h"
+#include "../implot/implot_internal.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
