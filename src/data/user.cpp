@@ -3,7 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <string>
-#include "login.cpp"
+#include "login.h"
 
 user::user(std::string name, std::string login1, std::string password1, int capital)
 {

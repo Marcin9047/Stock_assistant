@@ -1,7 +1,6 @@
-#include "user.h"
+#pragma once
+#include "login.h"
 #include <string>
-
-std::vector<user> users;
 
 user log_in(std::string login, std::string password)
 {

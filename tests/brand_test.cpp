@@ -1,9 +1,9 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 #include "../src/data/brand.h"
-#include "../src/data/data.cpp"
 #include "../src/data/data.h"
-#include "../src/data/user.cpp"
+#include "../src/data/user.h"
+#include "../src/data/login.h"
 #include <iostream>
 #include <string>
 
