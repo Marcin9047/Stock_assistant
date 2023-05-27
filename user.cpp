@@ -3,13 +3,15 @@
 #include <vector>
 #include <iostream>
 #include <string>
+#include "login.cpp"
 
-user::user(int capital, std::vector<std::string> fav, char attitude)
+user::user(std::string name, std::string login1, std::string password1, int capital)
 {
+    nickname = name;
+    login = login1;
+    password = password1;
     user_capital = capital;
-    favourites = fav;
-    trading_attitude = attitude;
-
+    users.push_back(*this);
 };
 
 int user::get_capital()
@@ -52,4 +54,19 @@ std::vector<std::string> user::get_favourites()
 std::vector<std::string> user::get_suggestions()
 {
 
-}
+};
+
+std::string user::get_name()
+{
+    return nickname;
+};
+
+std::string user::get_login()
+{
+    return login;
+};
+
+std::string user::get_password()
+{
+    return password;
+};

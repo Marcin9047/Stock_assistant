@@ -109,8 +109,17 @@ TEST_CASE("User class")
 {
    SECTION("capital test")
     {
-        user u1;
+        user u1("John", "John_John", "8832");
+        user u2("John2", "John_John2", "8832");
         u1.set_capital(320);
-        REQUIRE(u1.get_capital() == 320);
+        REQUIRE(users.size() == 2);
+    }
+
+    SECTION("log_in test")
+    {
+        user u1("John", "John_John", "500");
+        user u2("John2", "John_John2", "8832");
+        user u3 = log_in("John_John", "500");
+        REQUIRE(u3.get_name() == "John");
     }
 }
