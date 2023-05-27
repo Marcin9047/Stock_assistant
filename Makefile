@@ -1,77 +1,59 @@
+CXX = g++
+CXXFLAGS = -Wall -Wextra -std=c++17 # -Wformat -g
+LDFLAGS = -lcurl -lglfw -lGL -ldl # dodać dodatkowe biblioteki
+
+# Ścieżki do plików nagłówkowych
+INCLUDES = -Isrc/api # dodać -Isrc/folder
+INCLUDES += -Isrc/interface/imgui -Isrc/interface/backends -Isrc/interface/implot -Isrc/interface/code
+
+# Pliki źródłowe
+SRCS = $(wildcard src/api/*.cpp) main.cpp # dodać $(wildcard src/folder/*.cpp)
+SRCS += $(wildcard src/interface/backends/*.cpp)
+SRCS += $(wildcard src/interface/code/*.cpp)
+SRCS += $(wildcard src/interface/imgui/*.cpp)
+SRCS += $(wildcard src/interface/implot/*.cpp)
+
+OBJS = $(addprefix build/,$(notdir $(SRCS:.cpp=.o)))
+TEST_SRCS = $(wildcard tests/*.cpp)
+TEST_OBJS = $(addprefix build/,$(notdir $(TEST_SRCS:.cpp=.o)))
+EXECUTABLE = stock_assistant
+
+.PHONY: all clean tests
+
+all: $(EXECUTABLE)
+
+$(EXECUTABLE): $(OBJS)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -o $@ $^ $(LDFLAGS)
+
+build/%.o: src/api/%.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+# przykładowy build do kopiowania
 #
-# Cross Platform Makefile
-# Compatible with MSYS2/MINGW, Ubuntu 14.04.1 and Mac OS X
-#
-# You will need GLFW (http://www.glfw.org):
-# Linux:
-#   apt-get install libglfw-dev
-# Mac OS X:
-#   brew install glfw
-# MSYS2:
-#   pacman -S --noconfirm --needed mingw-w64-x86_64-toolchain mingw-w64-x86_64-glfw
-#
-
-#CXX = g++
-#CXX = clang++
-
-EXE = stock_assistant
-IMGUI_DIR = ../
-SOURCES = main.cpp windows.cpp
-SOURCES += $(IMGUI_DIR)/imgui/imgui.cpp $(IMGUI_DIR)/imgui/imgui_demo.cpp $(IMGUI_DIR)/imgui/imgui_draw.cpp $(IMGUI_DIR)/imgui/imgui_tables.cpp $(IMGUI_DIR)/imgui/imgui_widgets.cpp 
-SOURCES += $(IMGUI_DIR)/backends/imgui_impl_glfw.cpp $(IMGUI_DIR)/backends/imgui_impl_opengl3.cpp
-SOURCES += $(IMGUI_DIR)/implot/implot.cpp $(IMGUI_DIR)/implot/implot_items.cpp $(IMGUI_DIR)/implot/implot_candlestick.cpp 
-OBJS = $(addsuffix .o, $(basename $(notdir $(SOURCES))))
-UNAME_S := $(shell uname -s)
-LINUX_GL_LIBS = -lGL
-
-CXXFLAGS = -std=c++11 -I$(IMGUI_DIR)/imgui -I$(IMGUI_DIR)/backends -I$(IMGUI_DIR)/implot
-CXXFLAGS += -g -Wall -Wformat
-LIBS =
-
-##---------------------------------------------------------------------
-## OPENGL ES
-##---------------------------------------------------------------------
-
-## This assumes a GL ES library available in the system, e.g. libGLESv2.so
-# CXXFLAGS += -DIMGUI_IMPL_OPENGL_ES2
-# LINUX_GL_LIBS = -lGLESv2
-
-##---------------------------------------------------------------------
-## BUILD FLAGS PER PLATFORM
-##---------------------------------------------------------------------
-
-ifeq ($(UNAME_S), Linux) #LINUX
-	ECHO_MESSAGE = "Linux"
-	LIBS += $(LINUX_GL_LIBS) `pkg-config --static --libs glfw3`
-
-	CXXFLAGS += `pkg-config --cflags glfw3`
-	CFLAGS = $(CXXFLAGS)
-endif
+# build/%.o: src/folder/%.cpp
+#     $(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
 
-##---------------------------------------------------------------------
-## BUILD RULES
-##---------------------------------------------------------------------
+build/%.o: src/interface/imgui/%.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c -o $@ $<
 
-%.o:%.cpp
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+build/%.o: src/interface/backends/%.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c -o $@ $<
 
-%.o:$(IMGUI_DIR)/imgui/%.cpp
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+build/%.o: src/interface/implot/%.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c -o $@ $<
 
-%.o:$(IMGUI_DIR)/backends/%.cpp
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+build/%.o: src/interface/code/%.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c -o $@ $<
 
-%.o:$(IMGUI_DIR)/implot/%.cpp
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+build/%.o: tests/%.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
-all: $(EXE)
-	@echo Build complete for $(ECHO_MESSAGE)
+build/main.o: main.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
-$(EXE): $(OBJS)
-	$(CXX) -o $@ $^ $(CXXFLAGS) $(LIBS)
+tests: $(TEST_OBJS) $(filter-out build/main.o,$(OBJS))
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -o run_all_tests $^ $(LDFLAGS)
 
 clean:
-	rm -f $(EXE) $(OBJS)
-
-.phony: all clean
+	rm -f build/*.o run_all_tests proi $(EXECUTABLE) $(OBJS)
