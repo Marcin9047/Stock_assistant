@@ -14,14 +14,14 @@ using DataPoint = JsonParser::DataPoint;
 
 sort::sort(int capital, std::string attitude, std::vector<std::string> favourites)
 {
-
+    float risk_wsp = 0.7; //for lowkey *= for cryptocurrencies
 
     if(attitude=="lowkey")
     {
         float g_wsp = 1.0;  //  recent growth either good or bad
-        float r_wsp = 2.0;  // rise == good
+        float r_wsp = 5.0;  // rise == good
         float l_wsp = 1.5;   // liquidity either good or bad
-        float h_wsp = 0.1; // hops lower==better (for lowkey)
+        float h_wsp = 3.0; // hops lower==better (for lowkey)
         float wsp=0;
         float new_wsp=0;
         std::string new_name;
@@ -58,8 +58,10 @@ sort::sort(int capital, std::string attitude, std::vector<std::string> favourite
 
                 }
 
-                h_wsp /= hop(parser.getLowVector(dataPoints), parser.getHighVector(dataPoints), parser.getOpenVector(dataPoints), parser.getCloseVector(dataPoints));
-                new_wsp += h_wsp;
+                if(hop(parser.getLowVector(dataPoints), parser.getHighVector(dataPoints), parser.getOpenVector(dataPoints), parser.getCloseVector(dataPoints))<0.1)
+                {
+                    new_wsp += h_wsp;
+                }
 
             }
 
@@ -76,9 +78,79 @@ sort::sort(int capital, std::string attitude, std::vector<std::string> favourite
     }
     else
     {
-        //else api request
-        //else algorithms
-        // else wsp
+        float g_wsp = 2.0;  //  recent growth either good or bad
+        float r_wsp = 5.0;  // rise == good
+        float l_wsp = 1.5;   // liquidity either good or bad
+        float h_wsp = 0.5; // hops higher==better (for risky)
+        float wsp=0;
+        float new_wsp=0;
+        std::string new_name;
+        std::string currency="USD";
+        std::string crypto="BTC";
+        std::string type = "minute";
+
+
+        for(int i=0;i<1;i++)//for each brand
+        {
+            ApiCC api;
+            api.set_type(type);
+            api.set_crypto(crypto);
+            api.set_currency(currency);
+            std::string jsonString = api.get_data();
+            JsonParser parser;
+            NASDAQ_pars N_parser;
+            std::vector<DataPoint> dataPoints = parser.parseJSON(jsonString);
+            std::vector<DataPoint> N_dataPoints = N_parser.parse_NASDAQ(jsonString);
+            std::vector<double> close = parser.getCloseVector(dataPoints);
+
+            if(isrising(close))
+            {
+                new_wsp += r_wsp;
+                g_wsp *= recentdiff(close);
+
+                if(islqrise(parser.getVolumeToVector(dataPoints)))
+                {
+                    new_wsp += (g_wsp-2)*l_wsp;//jeśli funkcja globalnie rosnie to jesli rosnie plynnosc to chcemy by osttatnia wartosc byla w gorca
+                }
+                else
+                {
+                    new_wsp += (2-g_wsp)*l_wsp; // jesli funkcja rosnie a lokalnie plynnosc maleje to chcemy by ostatnia wartosc byla w dolku
+
+                }
+
+                if(hop(parser.getLowVector(dataPoints), parser.getHighVector(dataPoints), parser.getOpenVector(dataPoints), parser.getCloseVector(dataPoints))<0.5)
+                {
+                    new_wsp += h_wsp;
+                }
+
+            }
+            else
+            {
+                h_wsp *= hop(parser.getLowVector(dataPoints), parser.getHighVector(dataPoints), parser.getOpenVector(dataPoints), parser.getCloseVector(dataPoints));
+                g_wsp *= recentdiff(close);
+                if(islqrise(parser.getVolumeToVector(dataPoints)))
+                {
+                    new_wsp += (g_wsp-2)*l_wsp;//jeśli funkcja globalnie nie rosnie to jesli ostatnie wartosci sa w gorce to chcemy by plynnosc rosla gorce
+                    new_wsp += h_wsp;
+                }
+                else
+                {
+                    new_wsp += (2-g_wsp)*l_wsp; // jesli funkcja nie rosnie a lokalnie plynnosc maleje to chcemy by ostatnia wartosc byla w dolku
+
+                }
+
+            }
+
+            if(new_wsp>wsp)
+            {
+                wsp = new_wsp;
+                brand_name.push_back(new_name);
+                if(brand_name.size()>3)
+                {
+                    brand_name.front().erase();
+                }
+            }
+        }
 
     }
 
