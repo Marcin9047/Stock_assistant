@@ -8,7 +8,7 @@ extern bool show_login_window;
 extern bool show_profile_data;
 extern bool show_stock;
 
-class window{
+class window {
 protected:
     const char* window_title;
     public:
