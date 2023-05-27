@@ -12,14 +12,16 @@
 
 using DataPoint = JsonParser::DataPoint;
 
-sort::sort(int capital, char attitude)
+sort::sort(int capital, std::string attitude, std::vector<std::string> favourites)
 {
 
-    if(attitude=='l')
+
+    if(attitude=="lowkey")
     {
-        float g_wsp = 1.0;
-        float r_wsp = 2.0;
-        float l_wsp = 1.5;
+        float g_wsp = 1.0;  //  recent growth either good or bad
+        float r_wsp = 2.0;  // rise == good
+        float l_wsp = 1.5;   // liquidity either good or bad
+        float h_wsp = 0.1; // hops lower==better (for lowkey)
         float wsp=0;
         float new_wsp=0;
         std::string new_name;
@@ -55,6 +57,10 @@ sort::sort(int capital, char attitude)
                     new_wsp += (1-g_wsp)*l_wsp; // jesli funkcja rosnie a lokalnie plynnosc maleje to chcemy by ostatnia wartosc byla w dolku
 
                 }
+
+                h_wsp /= hop(parser.getLowVector(dataPoints), parser.getHighVector(dataPoints), parser.getOpenVector(dataPoints), parser.getCloseVector(dataPoints));
+                new_wsp += h_wsp;
+
             }
 
             if(new_wsp>wsp)
@@ -81,8 +87,7 @@ sort::sort(int capital, char attitude)
 double sort::recentdiff(const std::vector<double>& inputArray) {
     int size = inputArray.size();
     if (size < 4) {
-        std::cerr << "Wektor musi zawierać przynajmniej 4 wartości!" << std::endl;
-        return 0.0;
+        throw std::invalid_argument("data must have at least 4 sampling periods");
     }
 
     double sum = 0.0;
@@ -97,11 +102,9 @@ double sort::recentdiff(const std::vector<double>& inputArray) {
 
 bool sort::isrising(const std::vector<double>& inputArray)
 {
-
     double result =0.0;
     if (inputArray.size() < 2) {
-        std::cout << "Tablica wejściowa musi mieć co najmniej 2 elementy!" << std::endl;
-        return false;
+        throw std::invalid_argument("data must have at least 2 sampling periods");
     }
 
     std::vector<double> currentArray = inputArray;
@@ -132,8 +135,7 @@ bool sort::islqrise(const std::vector<double>& inputArray)
     double sum = 0.0;
 
     if (size < 4) {
-        std::cout << "Tablica wejściowa musi mieć co najmniej 2 elementy!" << std::endl;
-        return false;
+        throw std::invalid_argument("data must have at least 2 sampling periods");
     }
 
     for (int i = size - 2; i >= size - 4; --i) {
@@ -152,6 +154,25 @@ bool sort::islqrise(const std::vector<double>& inputArray)
     }
 
 };
+
+double sort::hop(const std::vector<double>& lowArray, const std::vector<double>& highArray, const std::vector<double>& openArray,const std::vector<double>& closeArray)
+{
+    if(lowArray.size()!=highArray.size()!=openArray.size()!=closeArray.size())
+    {
+        throw std::invalid_argument("arrays must be same sizes");
+    }
+
+    int size = lowArray.size();
+    double wsp;
+
+    for(int i=0;i<size;i++)
+    {
+        wsp += 2*(highArray[i]-lowArray[i])/(openArray[i]+closeArray[i]);
+    }
+    wsp /= double(size);
+
+    return wsp;
+}
 /*
 std::vector<brand> sort::best_match()
 {
