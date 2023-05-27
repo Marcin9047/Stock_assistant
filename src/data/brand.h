@@ -4,6 +4,7 @@
 #include "data.h"
 #include <iostream>
 #include <string>
+#include <iomanip>
 
 template <class T>
 class brand
