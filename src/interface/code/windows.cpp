@@ -1,8 +1,8 @@
 #include "windows.h"
-#include "imgui.h"
-#include "implot.h"
-#include "implot_internal.h"
-#include "implot_candlestick.h"
+#include "../imgui/imgui.h"
+#include "../implot/implot.h"
+#include "../implot/implot_internal.h"
+#include "../implot/implot_candlestick.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
