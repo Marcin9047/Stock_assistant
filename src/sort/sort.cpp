@@ -7,18 +7,14 @@
 #include "sort.h"
 #include "JsonParser.hpp"
 #include "JsonFile.h"
+#include "../api/api.h"
+#include "../api/api_cc.h"
 
 using DataPoint = JsonParser::DataPoint;
 
 sort::sort(int capital, char attitude)
 {
-    JsonFile file("file.json");
-    std::string jsonString = file.read();
-    JsonParser parser;
-    NASDAQ_pars N_parser;
-    std::vector<DataPoint> dataPoints = parser.parseJSON(jsonString);
-    std::vector<DataPoint> N_dataPoints = N_parser.parse_NASDAQ(jsonString);
-    std::vector<double> close = parser.getCloseVector(dataPoints);
+
     if(attitude=='l')
     {
         float g_wsp = 1.0;
@@ -26,11 +22,25 @@ sort::sort(int capital, char attitude)
         float l_wsp = 1.5;
         float wsp=0;
         float new_wsp=0;
-        char new_name;
-        //api request
+        std::string new_name;
+        std::string currency="USD";
+        std::string crypto="BTC";
+        std::string type = "minute";
+
 
         for(int i=0;i<1;i++)//for each brand
         {
+            ApiCC api;
+            api.set_type(type);
+            api.set_crypto(crypto);
+            api.set_currency(currency);
+            std::string jsonString = api.get_data();
+            JsonParser parser;
+            NASDAQ_pars N_parser;
+            std::vector<DataPoint> dataPoints = parser.parseJSON(jsonString);
+            std::vector<DataPoint> N_dataPoints = N_parser.parse_NASDAQ(jsonString);
+            std::vector<double> close = parser.getCloseVector(dataPoints);
+
             if(isrising(close))
             {
                 new_wsp += r_wsp;
@@ -50,7 +60,11 @@ sort::sort(int capital, char attitude)
             if(new_wsp>wsp)
             {
                 wsp = new_wsp;
-                brand_name = new_name;
+                brand_name.push_back(new_name);
+                if(brand_name.size()>3)
+                {
+                    brand_name.front().erase();
+                }
             }
         }
     }
@@ -139,8 +153,13 @@ bool sort::islqrise(const std::vector<double>& inputArray)
 
 };
 /*
-brand sort::best_match()
+std::vector<brand> sort::best_match()
 {
-    return brand(char brand_name);
+    std::vector<brand> brand_vec
+    for (const auto& bn : brand_name) {
+           brand_vec.push_back(bn);
+        }
+
+    return brand_vec;
 }
 */

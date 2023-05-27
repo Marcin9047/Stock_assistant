@@ -194,23 +194,22 @@ public:
 
         try {
             json jsonData = json::parse(jsonStr);
+            std::vector<std::vector<double>> data = jsonData["dataset_data"]["data"];
 
-            if (jsonData["Response"] == "Success") {//to be changed
-                json data = jsonData["Data"]["Data"];//to be changed
+            for (const auto& item : data) {
+                DataPoint dp;
+                dp.time = std::to_string(item[0]);
+                dp.open = item[1];
+                dp.high = item[2];
+                dp.low = item[3];
+                dp.close = item[4];
+                //dp.volumeFrom = item[];
+                dp.volumeTo = item[5];
 
-                for (const auto& item : data) {
-                    DataPoint dp;
-                    dp.time = item["time"].dump();
-                    dp.open = item["open"].get<double>();
-                    dp.high = item["high"].get<double>();
-                    dp.low = item["low"].get<double>();
-                    dp.volumeFrom = item["volumefrom"].get<double>();
-                    dp.volumeTo = item["volumeto"].get<double>();
-                    dp.close = item["close"].get<double>();
 
-                    dataPoints.push_back(dp);
-                }
+                dataPoints.push_back(dp);
             }
+
         } catch (const json::exception& e) {
             std::cerr << "JSON parsing error: " << e.what() << std::endl;
         }
