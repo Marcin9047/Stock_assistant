@@ -5,7 +5,7 @@
 
 // void operator<<(user_base v1, user player)
 
-void operator%(user_base& v1, user &player)
+void operator%(user_base& v1, user &player) // Register
 {
     if (v1.get_users().size() == 0)
         {
@@ -29,18 +29,27 @@ void operator%(user_base& v1, user &player)
     };
 };
 
-user user_base::log_in(std::string login, std::string password)
+user operator<<(user_base& v1, std::vector<std::string>& data) //Log_in
 {
+    std::vector<user> all_users = v1.get_users();
     for (int i = 0; i < all_users.size(); i++)
     {
-        if (all_users[i].get_login() == login && all_users[i].get_password() == password)
+        if (all_users[i].get_login() == data[0] && all_users[i].get_password() == data[1])
         {
             user usr = all_users[i];
+            usr.change_logged();
             return usr;
         }
     };
     throw "Podana nazwa użytkownika lub hasło jest niepoprawne";
 };
+
+void operator>>(user_base& v1, user &player)
+{
+    player.change_logged();
+};
+
+
 
 std::vector<user> user_base::get_users()
 {

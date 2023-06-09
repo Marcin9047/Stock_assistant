@@ -26,6 +26,7 @@ class user
         std::vector<std::string> get_favourites();
         std::vector<std::string> get_suggestions();
         bool islogged();
+        void change_logged();
         std::string get_name();
         std::string get_login();
         std::string get_password();

@@ -74,3 +74,11 @@ bool user::islogged()
 {
     return logged;
 };
+
+void user::change_logged()
+{
+    if (islogged())
+        logged = false;
+    else
+        logged = true;
+};
