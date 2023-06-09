@@ -11,7 +11,6 @@ user::user(std::string name, std::string login1, std::string password1, int capi
     login = login1;
     password = password1;
     user_capital = capital;
-    users.push_back(*this);
 };
 
 int user::get_capital()
@@ -69,4 +68,9 @@ std::string user::get_login()
 std::string user::get_password()
 {
     return password;
+};
+
+bool user::islogged()
+{
+    return logged;
 };
