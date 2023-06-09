@@ -108,17 +108,39 @@ TEST_CASE("User class")
 {
    SECTION("capital test")
     {
-        user u1("John", "John_John", "8832");
-        user u2("John2", "John_John2", "8832");
+        user_base sesion1;
+        user u1("John3", "John_John", "8832");
+        user u2("John4", "John_John2", "8835");
+        sesion1 % u1;
+        sesion1 % u2;
         u1.set_capital(320);
-        REQUIRE(users.size() == 2);
+        std::vector<user> all = sesion1.get_users(); 
+        REQUIRE(all.size() == 2);
     }
 
     SECTION("log_in test")
     {
+        user_base sesion1;
         user u1("John", "John_John", "500");
         user u2("John2", "John_John2", "8832");
-        user u3 = log_in("John_John", "500");
-        REQUIRE(u3.get_name() == "John");
+        sesion1 % u1;
+        sesion1 % u2;
+        std::vector<std::string> data = {"John_John2" ,"8832"};
+        user u4 = sesion1 << data;
+        REQUIRE(u4.get_name() == "John2");
+        REQUIRE(u4.islogged() == true);
+    }
+    
+    SECTION("log_in test")
+    {
+        user_base sesion1;
+        user u1("John", "John_John", "500");
+        user u2("John2", "John_John2", "8832");
+        sesion1 % u1;
+        sesion1 % u2;
+        std::vector<std::string> data = {"John_John2" ,"8832"};
+        user u4 = sesion1 << data;
+        sesion1 >> u4;
+        REQUIRE(u4.islogged() == false);
     }
 }

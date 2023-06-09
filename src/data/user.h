@@ -9,6 +9,7 @@ class user
     char trading_attitude;
     int user_capital;
     std::string nickname;
+    bool logged = false;
 
 
     private:
@@ -24,6 +25,8 @@ class user
         void delate_favourite(std::string name);
         std::vector<std::string> get_favourites();
         std::vector<std::string> get_suggestions();
+        bool islogged();
+        void change_logged();
         std::string get_name();
         std::string get_login();
         std::string get_password();
