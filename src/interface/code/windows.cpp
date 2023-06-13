@@ -21,7 +21,7 @@
 #include "../../sort/sort.h"
 
 user current_user("123", "123", "123");
-user_base users;
+user_base users("sesion1");
 
 bool show_login_window;
 bool show_profile_data;
@@ -113,7 +113,7 @@ void profile_window::show()
     static const char *attitude = NULL;
     if (ImGui::BeginCombo("##combo", attitude))
     {
-        for (long unsigned int n = 0; n < items.size(); n++)
+        for (int n = 0; n < IM_ARRAYSIZE(attitudes); n++)
         {
             bool is_selected = (attitude == attitudes[n]);
 
@@ -124,18 +124,18 @@ void profile_window::show()
         }
         ImGui::EndCombo();
     }
-    char att;
+    std::string att;
     if (attitude)
     {
         if (strcmp(attitude, "Long-term investment"))
         {
-            att = 'l';
+            att = "lowkey";
         }
         else if (strcmp(attitude, "Short-term investment"))
         {
         }
         // std::cout << (current_user.get_favourites()).size();
-        sort sorting(current_user.get_capital(), att);
+        sort sorting(current_user.get_capital(), att, current_user.get_favourites());
         // std::vector<std::string> sorted_favourites = sorting.best_match();
         // std::vector<std::string> sorted_favourites = current_user.get_favourites(); //to domyślnie będzie użyte
         std::vector<std::string> sorted_favourites = current_user.get_favourites(); // w ramach testów
