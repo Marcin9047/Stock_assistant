@@ -32,12 +32,6 @@ public:
     void show();
 };
 
-class stock_window: public window {
-public:
-    stock_window();
-    void show();
-};
-
 class registration_window: public window {
 public:
     registration_window();
