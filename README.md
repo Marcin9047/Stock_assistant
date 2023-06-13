@@ -42,6 +42,9 @@ Uzyskaliśmy schemat budowy aplikacji. Wybraliśmy odpowiednią bibliotekę inte
 - `nlohmann/json.hpp` - obsługa danych w formacie json
     - Linux: `sudo apt-get install nlohmann-json3-dev`
 
+- `glfw3` - biblioteka do wyświetlania głównego okna aplikacji
+    - Linux: `sudo apt install libglfw3-dev`
+
 
 # Zaimplementowane klasy
 
@@ -68,7 +71,10 @@ Uzyskaliśmy schemat budowy aplikacji. Wybraliśmy odpowiednią bibliotekę inte
 
 - `class ApiNasdaq` - dziedziczy po `class Api`. Zapytania odpowiednie dla nasdaq.com
 
-    - TBA
+    - `set_type()` - ustawia typ pobieranych danych
+        - `"databases"` pobiera dane o dostępnych bazach danych (wewnątrz nich są datasets)
+    - `set_database` - ustawia wybraną bazę danych np. `WIKI` ...
+    - `set_company` - ustawia wybraną firmę np. `FB` ...
 
 - TBA
 
@@ -117,5 +123,19 @@ Uzyskaliśmy schemat budowy aplikacji. Wybraliśmy odpowiednią bibliotekę inte
     - `isrising()` - zwraca prawde jeśli wykres jest globalnie rosnący
     - `islqrising()` - zwraca prawdę jeśli ostatnia ilość wymienionych wolumenów jest większa od średniej z 3 ostatnich cykli
 
+## Interface
+
+- `class window` - klasa bazowa, po której dziedziczą poszczególne wyświetlane okna
+    - `show()` - wyświetla puste okno
+
+- `class login_window` - klasa umożliwiająca stworzenie oka służącego do logowania
+    - `show()` - wyświetla okno służące do zalogowania się użytkownikowi
+
+- `class profile_window` - klasa umożliwiająca stworzenie oka wyświetlającego informacje dotyczące profilu żytkownika, 
+    dodawanie nowych akcji i wyświetlanie wykresów
+    - `show()` - wyświetla okno profilowe
+
+- `class registration_window` - klasa umożliwiająca stworzenie oka służącego do rejestracji nowego użytkownika
+    - `show()` - wyświetla okno służące do zarejestrowania się użytkownikowi
 
 ## TBA

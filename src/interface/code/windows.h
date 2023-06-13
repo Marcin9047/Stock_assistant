@@ -3,10 +3,13 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "../../data/user.h"
+
 
 extern bool show_login_window;
 extern bool show_profile_data;
 extern bool show_stock;
+extern bool show_registration;
 
 class window {
 protected:
@@ -32,5 +35,11 @@ public:
 class stock_window: public window {
 public:
     stock_window();
+    void show();
+};
+
+class registration_window: public window {
+public:
+    registration_window();
     void show();
 };
