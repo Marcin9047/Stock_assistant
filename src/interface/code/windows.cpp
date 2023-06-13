@@ -70,7 +70,7 @@ void profile_window::show() {
 
     if (ImGui::BeginCombo("##combo", current_item.c_str())) // The second parameter is the label previewed before opening the combo.
     {
-        for (int n = 0; n < items.size(); n++)
+        for (long unsigned int n = 0; n < items.size(); n++)
         {
             bool is_selected = (current_item == items[n]); 
             if (ImGui::Selectable(items[n].c_str(), is_selected))

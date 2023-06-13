@@ -52,7 +52,7 @@ std::vector<std::string> user::get_favourites()
 
 std::vector<std::string> user::get_suggestions()
 {
-
+    return {};
 };
 
 std::string user::get_name()

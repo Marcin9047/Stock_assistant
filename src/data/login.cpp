@@ -1,7 +1,11 @@
-#pragma once
 #include "login.h"
 #include <string>
 
+
+user_base::user_base(std::string name1)
+{
+    name = name1;
+}
 
 // void operator<<(user_base v1, user player)
 
@@ -13,18 +17,22 @@ void operator%(user_base& v1, user &player) // Register
         }
     else
     {
-        for (int i = 0; i < v1.all_users.size(); i++)
+        for (long unsigned int i = 0; i < v1.all_users.size(); i++)
         {
             if (v1.all_users[i].get_name() == player.get_name())
             {
                 throw "Podana nazwa użytkownika jest zajęta";  //exeption
             }
             else
+            {
                 if (v1.all_users[i].get_login() == player.get_login() or v1.all_users[i].get_password() == player.get_password())
                     throw "Podany login lub hasło jest już zajęte";
                 else
+                    {
                     v1.add(player);
                     break;
+                    };
+            };
         };
     };
 };
@@ -32,7 +40,7 @@ void operator%(user_base& v1, user &player) // Register
 user operator<<(user_base& v1, std::vector<std::string>& data) //Log_in
 {
     std::vector<user> all_users = v1.get_users();
-    for (int i = 0; i < all_users.size(); i++)
+    for (long unsigned int i = 0; i < all_users.size(); i++)
     {
         if (all_users[i].get_login() == data[0] && all_users[i].get_password() == data[1])
         {
