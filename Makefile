@@ -3,12 +3,13 @@ CXXFLAGS = -Wall -Wextra -std=c++17 # -Wformat -g
 LDFLAGS = -lcurl -lglfw -lGL -ldl # dodać dodatkowe biblioteki
 
 # Ścieżki do plików nagłówkowych
-INCLUDES = -Isrc/api -Isrc/data # dodać -Isrc/folder
+INCLUDES = -Isrc/api -Isrc/data -Isrc/sort # dodać -Isrc/folder
 INCLUDES += -Isrc/interface/imgui -Isrc/interface/backends -Isrc/interface/implot -Isrc/interface/code
 
 # Pliki źródłowe
 SRCS = $(wildcard src/api/*.cpp) main.cpp # dodać $(wildcard src/folder/*.cpp)
 SRCS += $(wildcard src/data/*.cpp)
+SRCS += $(wildcard src/sort/*.cpp)
 SRCS += $(wildcard src/interface/backends/*.cpp)
 SRCS += $(wildcard src/interface/code/*.cpp)
 SRCS += $(wildcard src/interface/imgui/*.cpp)
@@ -35,6 +36,9 @@ build/%.o: src/api/%.cpp
 #     $(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
 build/%.o: src/data/%.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+build/%.o: src/sort/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
 build/%.o: src/interface/imgui/%.cpp

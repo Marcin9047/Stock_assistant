@@ -62,7 +62,7 @@ int main(int, char**)
 
     show_login_window = true;
     show_profile_data = false;
-    show_stock = false;
+    show_registration = false;
     ImVec4 clear_color = ImVec4(0.10f, 0.50f, 0.50f, 1.00f);
 
     // Main loop
@@ -71,11 +71,9 @@ int main(int, char**)
     io.IniFilename = nullptr;
     EMSCRIPTEN_MAINLOOP_BEGIN
 #else
-    std::string username{""};
-    std::string password{""};
     login_window log_wnd;
     profile_window prof_wnd;
-    stock_window stock_wnd;
+    registration_window register_wnd;
 
     while (!glfwWindowShouldClose(window))
 #endif
@@ -100,8 +98,8 @@ int main(int, char**)
             prof_wnd.show();
             
         }
-        if (show_stock) {
-            stock_wnd.show();
+        if (show_registration) {
+            register_wnd.show();
         }
 
         // Rendering
