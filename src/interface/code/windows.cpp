@@ -113,7 +113,7 @@ void profile_window::show()
     static const char *attitude = NULL;
     if (ImGui::BeginCombo("##combo", attitude))
     {
-        for (int n = 0; n < IM_ARRAYSIZE(attitudes); n++)
+        for (long unsigned int n = 0; n < items.size(); n++)
         {
             bool is_selected = (attitude == attitudes[n]);
 

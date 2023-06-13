@@ -108,7 +108,7 @@ TEST_CASE("User class")
 {
    SECTION("capital test")
     {
-        user_base sesion1;
+        user_base sesion1("sesja1");
         user u1("John3", "John_John", "8832");
         user u2("John4", "John_John2", "8835");
         sesion1 % u1;
@@ -120,7 +120,7 @@ TEST_CASE("User class")
 
     SECTION("log_in test")
     {
-        user_base sesion1;
+        user_base sesion1("sesja1");
         user u1("John", "John_John", "500");
         user u2("John2", "John_John2", "8832");
         sesion1 % u1;
@@ -133,7 +133,7 @@ TEST_CASE("User class")
     
     SECTION("log_in test")
     {
-        user_base sesion1;
+        user_base sesion1("sesja 1");
         user u1("John", "John_John", "500");
         user u2("John2", "John_John2", "8832");
         sesion1 % u1;
@@ -141,6 +141,7 @@ TEST_CASE("User class")
         std::vector<std::string> data = {"John_John2" ,"8832"};
         user u4 = sesion1 << data;
         sesion1 >> u4;
+        sesion1.writeJsonToFile();
         REQUIRE(u4.islogged() == false);
     }
 }
