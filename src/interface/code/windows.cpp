@@ -28,20 +28,16 @@ bool show_profile_data;
 bool show_stock;
 bool show_registration;
 
-window::window(const char *title)
-{
-
+window::window(const char *title) {
     window_title = title;
 }
 
-void window::show()
-{
+void window::show() {
     ImGui::Begin(window_title);
     ImGui::End();
 }
 
-login_window::login_window() : window("Log in")
-{
+login_window::login_window() : window("Log in") {
 }
 
 void login_window::show()
@@ -93,9 +89,13 @@ void profile_window::show()
     ImGui::Text("%s", name_text);
     std::string capital_text = "Capital " + std::to_string(current_user.get_capital());
     ImGui::Text("%s", capital_text.c_str());
+    static bool update = false;
     if (ImGui::Button("Update capital"))
     {
-        std::string capital{""};
+        update = !update;
+    }
+    if (update) {
+        static std::string capital{""};
         char buf[255]{};
         {
             strncpy(buf, capital.c_str(), sizeof(buf) - 1);
@@ -240,7 +240,7 @@ void registration_window::show()
     static std::string capital{""};
     ImGui::Begin(window_title);
 
-    char buf[255]{};
+    char buf[225]{};
     {
         strncpy(buf, username.c_str(), sizeof(buf) - 1);
         ImGui::InputText("Username", buf, sizeof(buf));
