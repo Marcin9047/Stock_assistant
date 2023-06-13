@@ -3,31 +3,43 @@
 ApiNasdaq::ApiNasdaq()
 {
     urls = {
-        
+        {"NASDAQ", "https://data.nasdaq.com/api/v3/"},
+        {"databases", "databases"},
     };
 }
 
-// void ApiCC::set_type(std::string new_type)
-// {
-//     type = new_type;
-// }
+void ApiNasdaq::set_type(std::string new_type) {
+    // if(new_type.empty()) {
+    //     throw std::invalid_argument("Type cannot be empty");
+    // } else if(urls.find(new_type) == urls.end() && new_type != "crypto compare") {
+    //     throw std::invalid_argument("Invalid type: " + new_type);
+    // }
+    type = new_type;
+}
 
-// void ApiCC::set_crypto(std::string new_crypto)
-// {
-//     crypto = new_crypto;
-// }
+void ApiNasdaq::set_database(std::string new_database) {
+    database = new_database;
+}
 
-// void ApiCC::set_currency(std::string new_currency)
-// {
-//     currency = new_currency;
-// }
+void ApiNasdaq::set_company(std::string new_company)
+{
+     if(new_company.empty()) {
+        throw std::invalid_argument("Company cannot be empty");
+    }
+    company = new_company;
+}
 
 void ApiNasdaq::create_url() {
-    url = "";
-    url += urls["nasdaq"];
-
+    url = urls["NASDAQ"];
+    if (type == "databases"){
+        url += type;
+        // url += "databases/WIKI/codes.json";
+    } else {
+        url += "datasets/" + database + "/";
+        url += company + "/data.json";
+    }
     
     
-
-    save_url_to_log(log_path, url);
+    url += "?api_key=" + keys["NASDAQ_API_Key"];
+    // url += "&start_date=2020-01-01&end_date=2020-12-31";
 }

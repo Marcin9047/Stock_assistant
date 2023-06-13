@@ -6,6 +6,10 @@
 #include <string>
 #include <map>
 #include <chrono>
+#include <memory>
+#include <iomanip>
+#include <ctime>
+#include <sys/stat.h>
 #include <curl/curl.h>
 
 class Api {
@@ -19,7 +23,7 @@ protected:
     std::string url;
     std::map<std::string, std::string> keys;
     std::string log_path = "log/api_log.txt";
-    void save_url_to_log(const std::string& fileName, const std::string& line);
+    void log_event(const std::string& line);
 
 private:
     virtual void create_url();
@@ -27,4 +31,10 @@ private:
     static size_t writeFunction(void *ptr, size_t size, size_t nmemb, std::string* data);
 };
 
+class CurlDeleter {
+public:
+    void operator()(CURL* curl) {
+        curl_easy_cleanup(curl);
+    }
+};
 #endif
