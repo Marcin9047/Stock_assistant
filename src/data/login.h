@@ -14,4 +14,5 @@ class user_base
         void add(user player);
 
         void writeJsonToFile();
+        void LoadFromJson();
 };

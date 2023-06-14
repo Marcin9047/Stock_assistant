@@ -144,4 +144,44 @@ TEST_CASE("User class")
         sesion1.writeJsonToFile();
         REQUIRE(u4.islogged() == false);
     }
+
+    SECTION("log_in test")
+    {
+        user_base sesion1("sesja 1");
+        user u1("John", "John_John", "500");
+        user u2("John2", "John_John2", "8832");
+
+
+        brand_crypto b1("firma1");
+        brand_crypto b2("firma2");
+        brand_crypto b3("firma3");
+
+
+        u1.add_favourite("firma1");
+        u1.add_favourite("firma2");
+        u1.add_favourite("firma3");
+
+
+        sesion1 % u1;
+        sesion1 % u2;
+
+
+        sesion1.writeJsonToFile();
+        user_base sesion2("sesja 1");
+        sesion2.LoadFromJson();
+
+        std::vector<std::string> data = {"John_John" ,"500"};
+        user u4 = sesion2 << data;
+
+
+        std::vector<std::string> favorites = u4.get_favourites();
+        for (int i; i < favorites.size(); i++)
+        {
+            std::cout << favorites[i];
+        };
+
+        std::vector<user> all = sesion2.get_users();
+        REQUIRE(all.size() == 2);
+        REQUIRE(favorites.size() == 3);
+    }
 }
