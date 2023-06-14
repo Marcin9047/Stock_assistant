@@ -13,7 +13,7 @@ class JsonParser {
 
 public:
     struct DataPoint {
-        std::string time;
+        double time;
         double open;
         double high;
         double low;
@@ -33,7 +33,7 @@ public:
 
                 for (const auto& item : data) {
                     DataPoint dp;
-                    dp.time = item["time"].dump();
+                    dp.time = item["time"].get<double>();
                     dp.open = item["open"].get<double>();
                     dp.high = item["high"].get<double>();
                     dp.low = item["low"].get<double>();
@@ -51,8 +51,18 @@ public:
         return dataPoints;
     }
 
-    std::list<std::string> getTimeList(const std::vector<DataPoint>& dataPoints) {
-        std::list<std::string> timeList;
+    std::list<double> getTimeList(const std::vector<DataPoint>& dataPoints) {
+        std::list<double> timeList;
+
+        for (const auto& dp : dataPoints) {
+            timeList.push_back(dp.time);
+        }
+
+        return timeList;
+    }
+
+    std::vector<double> getTimeVector(const std::vector<DataPoint>& dataPoints) {
+        std::vector<double> timeList;
 
         for (const auto& dp : dataPoints) {
             timeList.push_back(dp.time);
@@ -198,7 +208,7 @@ public:
 
             for (const auto& item : data) {
                 DataPoint dp;
-                dp.time = std::to_string(item[0]);
+                dp.time = item[0];
                 dp.open = item[1];
                 dp.high = item[2];
                 dp.low = item[3];
@@ -215,6 +225,30 @@ public:
         }
 
         return dataPoints;
+    }
+
+};
+
+
+
+class NamePars
+{
+public:
+    std::vector<std::string> parseNames(const std::string& jsonStr) {
+        std::vector<std::string> cryptos;
+
+        try {
+            json jsonData = json::parse(jsonStr);
+            json data = jsonData[""][""];
+
+            for (const auto& item : data) {
+                cryptos.push_back(item[""]);
+            }
+        } catch (const json::exception& e) {
+            std::cerr << "JSON parsing error: " << e.what() << std::endl;
+        }
+
+        return cryptos;
     }
 
 };
