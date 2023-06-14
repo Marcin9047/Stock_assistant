@@ -25,12 +25,12 @@ sort::sort(int capital, std::string attitude, std::vector<std::string> favourite
     std::string currency="USD";
     std::string new_name;
 
-    for(int i=0;i<cryptos.size();i++)//for each brand
+    for(int i=0;i<2;i++)//for each brand
     {
         std::string crypto= cryptos[i];
         if(attitude=="lowkey")
         {
-            std::string type = "monthly";
+            std::string type = "daily";
             ApiCC api;
             api.set_type(type);
             api.set_crypto(crypto);

@@ -3,6 +3,7 @@
 #include <list>
 #include <string>
 #include <fstream>
+#include <random>
 #include "json.hpp"
 
 using json = nlohmann::json;
@@ -241,14 +242,27 @@ public:
             json jsonData = json::parse(jsonStr);
             json data = jsonData["Data"];
 
-            for (const auto& item : data) {
-                cryptos.push_back(item);
+            for (auto it = data.begin(); it != data.end(); ++it) {
+                cryptos.push_back(it.key());
             }
-        } catch (const json::exception& e) {
+        }
+        catch (const json::exception& e) {
             std::cerr << "JSON parsing error: " << e.what() << std::endl;
         }
+        std::vector<std::string> smallerVector;
+        std::random_device rd;
+        std::mt19937 gen(rd());
 
-        return cryptos;
+        std::uniform_real_distribution<double> dis(0.0, 1.0);
+        double reductionFactor = 0.003; // Factor of 300 reduction
+
+        for (const auto& element : cryptos) {
+
+            if (dis(gen) <= reductionFactor) {
+                smallerVector.push_back(element);
+            }
+        }
+
+        return smallerVector;
     }
-
 };
