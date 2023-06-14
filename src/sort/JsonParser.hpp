@@ -239,10 +239,10 @@ public:
 
         try {
             json jsonData = json::parse(jsonStr);
-            json data = jsonData[""][""];
+            json data = jsonData["Data"];
 
             for (const auto& item : data) {
-                cryptos.push_back(item[""]);
+                cryptos.push_back(item);
             }
         } catch (const json::exception& e) {
             std::cerr << "JSON parsing error: " << e.what() << std::endl;
