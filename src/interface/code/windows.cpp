@@ -102,10 +102,10 @@ void profile_window::show()
 {
     ImGui::Begin(window_title);
     std::string name = "Name: ";
-    user current_user = *current_user_ptr;
-    const char *name_text = (name + current_user.get_name()).c_str();
+    // user current_user = *current_user_ptr;
+    const char *name_text = (name + current_user_ptr->get_name()).c_str();
     ImGui::Text("%s", name_text);
-    std::string capital_text = "Capital " + std::to_string(current_user.get_capital());
+    std::string capital_text = "Capital " + std::to_string(current_user_ptr->get_capital());
     ImGui::Text("%s", capital_text.c_str());
     static bool update = false;
     if (ImGui::Button("Update capital"))
@@ -122,7 +122,7 @@ void profile_window::show()
         }
         if (ImGui::Button("Update"))
         {
-            current_user.set_capital(std::stoi(capital));
+            current_user_ptr->set_capital(std::stoi(capital));
             capital = "";
         }
     }
@@ -159,7 +159,7 @@ void profile_window::show()
             limit_multiplier = 100;
         }
         type = "hourly";
-        std::vector<std::string> favs = current_user.get_favourites();
+        std::vector<std::string> favs = current_user_ptr->get_favourites();
         if (!favs.empty()) {
             
             if (ImGui::BeginCombo("##combo2", selected_stock.c_str())) {
@@ -243,9 +243,9 @@ void profile_window::show()
         ImGui::SameLine();
         if (ImGui::Button("Add"))
         {
-            std::vector<std::string> favs = (*current_user_ptr).get_favourites();
+            std::vector<std::string> favs = current_user_ptr->get_favourites();
             if (favs.empty() || !(std::count(favs.begin(), favs.end(), selected_stock))) {
-                (*current_user_ptr).add_favourite(stock_name);
+                current_user_ptr->add_favourite(stock_name);
                 users.writeJsonToFile();
             }
             stock_name = "";
@@ -303,14 +303,13 @@ void registration_window::show()
     }
     if (ImGui::Button("Create account"))
     {
-        user u(username, login, password, std::stoi(capital));
+        user* u = new user(username, login, password, std::stoi(capital));
         std::vector<std::string> log_in_data;
         log_in_data.push_back(login);
         log_in_data.push_back(password);
-        users%(&u);
-        users<<log_in_data;
+        users%(u);
+        current_user_ptr = users<<log_in_data;
         users.writeJsonToFile();
-        current_user_ptr = &u;
         show_registration = false;
         show_profile_data = true;
     }
