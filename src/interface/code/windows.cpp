@@ -43,7 +43,7 @@ void window::show() {
 login_window::login_window() : window("Log in") {
 }
 
-void login_window::show()
+void login_window::show(int width, int height)
 {
     static bool load_session = true;
     if(load_session) {
@@ -52,7 +52,9 @@ void login_window::show()
     }
     static std::string login{""};
     static std::string password{""};
-    ImGui::Begin(window_title);
+    ImGui::SetNextWindowSize(ImVec2(width, height));
+    ImGui::SetNextWindowPos(ImVec2(0,0));
+    ImGui::Begin(window_title, nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
 
     ImGui::Text("Please log in to start");
     char buf[255]{};
@@ -98,18 +100,18 @@ profile_window::profile_window() : window("My profile")
 {
 }
 
-void profile_window::show()
+void profile_window::show(int width, int height)
 {
-    ImGui::Begin(window_title);
+    ImGui::SetNextWindowSize(ImVec2(width, height));
+    ImGui::SetNextWindowPos(ImVec2(0,0));
+    ImGui::Begin(window_title, nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
     std::string name = "Name: ";
-    // user current_user = *current_user_ptr;
     const char *name_text = (name + current_user_ptr->get_name()).c_str();
     ImGui::Text("%s", name_text);
     std::string capital_text = "Capital " + std::to_string(current_user_ptr->get_capital());
     ImGui::Text("%s", capital_text.c_str());
     static bool update = false;
-    if (ImGui::Button("Update capital"))
-    {
+    if (ImGui::Button("Update capital")) {
         update = !update;
     }
     if (update) {
@@ -261,13 +263,15 @@ void profile_window::show()
     ImGui::End();
 }
 
-registration_window::registration_window() : window("Create account")
+registration_window::registration_window() : window("Create account, all inputs can't have more than 6 characters")
 {
 }
 
-void registration_window::show()
+void registration_window::show(int width, int height)
 {
-    ImGui::Begin(window_title);
+    ImGui::SetNextWindowSize(ImVec2(width, height));
+    ImGui::SetNextWindowPos(ImVec2(0,0));
+    ImGui::Begin(window_title, nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
     static std::string username{""};
     static std::string login{""};
     static std::string password{""};
@@ -325,8 +329,10 @@ void registration_window::show()
 login_error_window::login_error_window() : window("Create account") {
 }
 
-void login_error_window::show() {
-    ImGui::Begin(window_title);
+void login_error_window::show(int width, int height) {
+    ImGui::SetNextWindowSize(ImVec2(width, height));
+    ImGui::SetNextWindowPos(ImVec2(0,0));
+    ImGui::Begin(window_title, nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
     ImGui::Text("Wrong login or password");
     if (ImGui::Button("Try again")) {
         show_login_error_window = false;
