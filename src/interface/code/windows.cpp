@@ -22,7 +22,7 @@
 #include "../../sort/JsonParser.hpp"
 #include "../../sort/sort.h"
 
-user current_user("123", "123", "123");
+user * current_user_ptr;
 user_base users("sesja 1");
 
 bool show_login_window;
@@ -73,7 +73,7 @@ void login_window::show()
         log_in_data.push_back(login);
         log_in_data.push_back(password);
         try{
-            current_user = users<<log_in_data;
+            current_user_ptr = users<<log_in_data;
             show_profile_data = true;
             show_login_window = false;
         }
@@ -102,6 +102,7 @@ void profile_window::show()
 {
     ImGui::Begin(window_title);
     std::string name = "Name: ";
+    user current_user = *current_user_ptr;
     const char *name_text = (name + current_user.get_name()).c_str();
     ImGui::Text("%s", name_text);
     std::string capital_text = "Capital " + std::to_string(current_user.get_capital());
@@ -242,8 +243,11 @@ void profile_window::show()
         ImGui::SameLine();
         if (ImGui::Button("Add"))
         {
-            std::vector<std::string> favs = current_user.get_favourites();
-            if (favs.empty() || std::count(favs.begin(), favs.end(), selected_stock)) current_user.add_favourite(stock_name);
+            std::vector<std::string> favs = (*current_user_ptr).get_favourites();
+            if (favs.empty() || !(std::count(favs.begin(), favs.end(), selected_stock))) {
+                (*current_user_ptr).add_favourite(stock_name);
+                users.writeJsonToFile();
+            }
             stock_name = "";
         }
     }
@@ -303,10 +307,10 @@ void registration_window::show()
         std::vector<std::string> log_in_data;
         log_in_data.push_back(login);
         log_in_data.push_back(password);
-        users%u;
+        users%(&u);
         users<<log_in_data;
         users.writeJsonToFile();
-        current_user = u;
+        current_user_ptr = &u;
         show_registration = false;
         show_profile_data = true;
     }
