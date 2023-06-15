@@ -51,6 +51,6 @@ void ApiCC::create_url() {
         url += std::to_string(now_time_t);
     }
 
-    // url += "&api_key=" + keys["cc_API_Key"];
+    url += "&api_key=" + keys["cc_API_Key"];
 
 }

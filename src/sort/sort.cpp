@@ -16,22 +16,21 @@ sort::sort(int capital, std::string attitude, std::vector<std::string> favourite
 {
     float risk_wsp = 0.7; //for lowkey *= for cryptocurrencies
 
-    if(attitude=="lowkey")
+    //api get crypto names
+    ApiCC api;
+    api.set_type("symbols");
+    std::string cryptos_names = api.get_data();
+    NamePars name_parser;
+    std::vector<std::string> cryptos = name_parser.parseNames(cryptos_names);
+    std::string currency="USD";
+    std::string new_name;
+
+    for(int i=0;i<cryptos.size();i++)//for each brand
     {
-        float g_wsp = 1.0;  //  recent growth either good or bad
-        float r_wsp = 5.0;  // rise == good
-        float l_wsp = 1.5;   // liquidity either good or bad
-        float h_wsp = 3.0; // hops lower==better (for lowkey)
-        float wsp=0;
-        float new_wsp=0;
-        std::string new_name;
-        std::string currency="USD";
-        std::string crypto="BTC";
-        std::string type = "minute";
-
-
-        for(int i=0;i<1;i++)//for each brand
+        std::string crypto= cryptos[i];
+        if(attitude=="lowkey")
         {
+            std::string type = "monthly";
             ApiCC api;
             api.set_type(type);
             api.set_crypto(crypto);
@@ -42,6 +41,12 @@ sort::sort(int capital, std::string attitude, std::vector<std::string> favourite
             std::vector<DataPoint> dataPoints = parser.parseJSON(jsonString);
             std::vector<DataPoint> N_dataPoints = N_parser.parse_NASDAQ(jsonString);
             std::vector<double> close = parser.getCloseVector(dataPoints);
+            float g_wsp = 1.0;  //  recent growth either good or bad
+            float r_wsp = 5.0;  // rise == good
+            float l_wsp = 1.5;   // liquidity either good or bad
+            float h_wsp = 3.0; // hops lower==better (for lowkey)
+            float wsp=0;
+            float new_wsp=0;
 
             if(isrising(close))
             {
@@ -65,6 +70,7 @@ sort::sort(int capital, std::string attitude, std::vector<std::string> favourite
 
             }
 
+            new_wsp*=risk_wsp;
             if(new_wsp>wsp)
             {
                 wsp = new_wsp;
@@ -75,23 +81,9 @@ sort::sort(int capital, std::string attitude, std::vector<std::string> favourite
                 }
             }
         }
-    }
-    else
-    {
-        float g_wsp = 2.0;  //  recent growth either good or bad
-        float r_wsp = 5.0;  // rise == good
-        float l_wsp = 1.5;   // liquidity either good or bad
-        float h_wsp = 0.5; // hops higher==better (for risky)
-        float wsp=0;
-        float new_wsp=0;
-        std::string new_name;
-        std::string currency="USD";
-        std::string crypto="BTC";
-        std::string type = "minute";
-
-
-        for(int i=0;i<1;i++)//for each brand
+        else
         {
+            std::string type = "minute";
             ApiCC api;
             api.set_type(type);
             api.set_crypto(crypto);
@@ -102,7 +94,12 @@ sort::sort(int capital, std::string attitude, std::vector<std::string> favourite
             std::vector<DataPoint> dataPoints = parser.parseJSON(jsonString);
             std::vector<DataPoint> N_dataPoints = N_parser.parse_NASDAQ(jsonString);
             std::vector<double> close = parser.getCloseVector(dataPoints);
-
+            float g_wsp = 2.0;  //  recent growth either good or bad
+            float r_wsp = 5.0;  // rise == good
+            float l_wsp = 1.5;   // liquidity either good or bad
+            float h_wsp = 0.5; // hops higher==better (for risky)
+            float wsp=0;
+            float new_wsp=0;
             if(isrising(close))
             {
                 new_wsp += r_wsp;
@@ -245,14 +242,15 @@ double sort::hop(const std::vector<double>& lowArray, const std::vector<double>&
 
     return wsp;
 }
-/*
-std::vector<brand> sort::best_match()
+
+std::vector<brand_crypto> sort::best_match()
 {
-    std::vector<brand> brand_vec
+    std::vector<brand_crypto> brand_vec;
     for (const auto& bn : brand_name) {
-           brand_vec.push_back(bn);
+            brand_crypto b(bn);
+            brand_vec.push_back(b);
         }
 
     return brand_vec;
 }
-*/
+
