@@ -254,7 +254,7 @@ public:
         std::mt19937 gen(rd());
 
         std::uniform_real_distribution<double> dis(0.0, 1.0);
-        double reductionFactor = 0.01; // Factor of 100 reduction
+        double reductionFactor = 0.003; // Factor of 300 reduction
 
         for (const auto& element : cryptos) {
 

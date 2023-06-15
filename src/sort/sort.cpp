@@ -12,7 +12,7 @@
 
 using DataPoint = JsonParser::DataPoint;
 
-sort::sort(int capital, std::string attitude, std::vector<brand_crypto> favourites)
+sort::sort(int capital, std::string attitude, std::vector<std::string> favourites)
 {
     float risk_wsp = 0.7; //for lowkey *= for cryptocurrencies
 
@@ -24,23 +24,9 @@ sort::sort(int capital, std::string attitude, std::vector<brand_crypto> favourit
     std::vector<std::string> cryptos = name_parser.parseNames(cryptos_names);
     std::string currency="USD";
 
-    for(long unsigned int i=0;i<cryptos.size();i++)//for each crypto
+    for(int i=0;i<cryptos.size();i++)//for each brand
     {
         std::string crypto= cryptos[i];
-        std::vector<std::string> fav_names;
-        //check if crypto is not already in favourites
-        if(fav_names.size()>0)
-        {
-            for(long unsigned int i=0;i< favourites.size();i++)
-            {
-                fav_names.push_back(favourites[i].get_brand());
-            }
-        }
-        if(std::find(fav_names.begin(), fav_names.end(), crypto) != fav_names.end())
-        {
-            continue;
-        }
-
         if(attitude=="lowkey")
         {
             std::string type = "daily";
@@ -91,7 +77,7 @@ sort::sort(int capital, std::string attitude, std::vector<brand_crypto> favourit
 
             }
 
-           // new_wsp*=risk_wsp;
+            new_wsp*=risk_wsp;
             if(new_wsp>wsp)
             {
                 wsp = new_wsp;
@@ -104,7 +90,7 @@ sort::sort(int capital, std::string attitude, std::vector<brand_crypto> favourit
         }
         else
         {
-            std::string type = "minute";
+            std::string type = "hourly";
             ApiCC api;
             api.set_type(type);
             api.set_crypto(crypto);
@@ -126,8 +112,8 @@ sort::sort(int capital, std::string attitude, std::vector<brand_crypto> favourit
             float g_wsp = 2.0;  //  recent growth either good or bad
             float r_wsp = 5.0;  // rise == good
             float l_wsp = 1.5;   // liquidity either good or bad
-            float h_wsp = 1.0; // hops higher==better (for risky)
-            float wsp=-50;
+            float h_wsp = 0.5; // hops higher==better (for risky)
+            float wsp=0;
             float new_wsp=0;
             if(isrising(close))
             {

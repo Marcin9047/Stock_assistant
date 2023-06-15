@@ -9,7 +9,6 @@
 #include "../src/sort/sort.h"
 #include "../src/api/api_cc.h"
 #include "../src/api/api.h"
-//#include "../src/data/brand.h"
 
 using json = nlohmann::json;
 using DataPoint = JsonParser::DataPoint;
@@ -93,7 +92,7 @@ TEST_CASE("constructor")
         std::string cryptos_names = api.get_data();
         NamePars name_parser;
         std::vector<std::string> crypto = name_parser.parseNames(cryptos_names);
-        REQUIRE(crypto.size()<100);
+        REQUIRE(crypto.size()<50);
 
     }
 }
@@ -102,9 +101,7 @@ TEST_CASE("sort")
 {
     SECTION("lowkey")
     {
-        brand_crypto f("APC");
-        std::vector<brand_crypto> fav;
-        fav.push_back(f);
+        std::vector<std::string> fav;
         std::string att = "lowkey";
         sort a(1,att,fav);
         std::vector<brand_crypto> cryptos = a.best_match();
@@ -115,9 +112,7 @@ TEST_CASE("sort")
     }
         SECTION("risky")
     {
-        brand_crypto f("APC");
-        std::vector<brand_crypto> fav;
-        fav.push_back(f);
+        std::vector<std::string> fav;
         std::string att = "risky";
         sort r(1,att,fav);
         std::vector<brand_crypto> r_cryptos = r.best_match();
