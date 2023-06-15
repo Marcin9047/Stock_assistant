@@ -54,8 +54,8 @@ void login_window::show(int width, int height)
     static std::string password{""};
     ImGui::SetNextWindowSize(ImVec2(width, height));
     ImGui::SetNextWindowPos(ImVec2(0,0));
-    ImGui::Begin(window_title, nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
-
+    ImGui::Begin(window_title, nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+    ImGui::PushItemWidth(200);
     ImGui::Text("Please log in to start");
     char buf[255]{};
     {
@@ -104,7 +104,8 @@ void profile_window::show(int width, int height)
 {
     ImGui::SetNextWindowSize(ImVec2(width, height));
     ImGui::SetNextWindowPos(ImVec2(0,0));
-    ImGui::Begin(window_title, nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+    ImGui::Begin(window_title, nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+    ImGui::PushItemWidth(200);
     std::string name = "Name: ";
     const char *name_text = (name + current_user_ptr->get_name()).c_str();
     ImGui::Text("%s", name_text);
@@ -145,9 +146,21 @@ void profile_window::show(int width, int height)
         }
         ImGui::EndCombo();
     }
+    static bool sorts = false;
     std::string att;
     static std::string selected_stock = "";
     if (!attitude.empty()) {
+        std::vector<std::string> favs;
+        std::string button_name;
+        if (sorts) {
+            // sort sorting(current_user_ptr->get_capital(), att, favs);
+            // favs = sorting.best_match();
+            favs = {"BTC", "ADA", "ETH"};
+            button_name = "Show all favourites";
+        } else {
+            favs = current_user_ptr->get_favourites();
+            button_name = "Show chosen for you";
+        }
         int limit_multiplier;
         std::string type;
         if (attitude == "Long-term investment")
@@ -161,7 +174,6 @@ void profile_window::show(int width, int height)
             limit_multiplier = 100;
         }
         type = "hourly";
-        std::vector<std::string> favs = current_user_ptr->get_favourites();
         int visible_items;
         if (favs.size() < 5) {
             visible_items = favs.size();
@@ -183,6 +195,9 @@ void profile_window::show(int width, int height)
                 }
             }
             ImGui::ListBoxFooter();
+        }
+        if (ImGui::Button(button_name.c_str())) {
+            sorts = !sorts;
         }
         
         if (!selected_stock.empty()) {
@@ -278,7 +293,7 @@ void registration_window::show(int width, int height)
 {
     ImGui::SetNextWindowSize(ImVec2(width, height));
     ImGui::SetNextWindowPos(ImVec2(0,0));
-    ImGui::Begin(window_title, nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+    ImGui::Begin(window_title, nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
     static std::string username{""};
     static std::string login{""};
     static std::string password{""};
@@ -340,7 +355,7 @@ login_error_window::login_error_window() : window("Create account") {
 void login_error_window::show(int width, int height) {
     ImGui::SetNextWindowSize(ImVec2(width, height));
     ImGui::SetNextWindowPos(ImVec2(0,0));
-    ImGui::Begin(window_title, nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+    ImGui::Begin(window_title, nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
     ImGui::Text("Wrong login or password");
     if (ImGui::Button("Try again")) {
         show_login_error_window = false;
