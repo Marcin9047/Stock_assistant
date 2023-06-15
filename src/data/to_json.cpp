@@ -18,14 +18,14 @@ void user_base::writeJsonToFile() {
         file << "{\n";
         for (long unsigned int i = 0; i < all_users.size(); i++)
         {   
-            file << "\"" + all_users[i].get_name() + "\""  << ":";
+            file << "\"" + all_users[i]->get_name() + "\""  << ":";
             file << "{\n";
-            file << "\t" << toJsonString("login", all_users[i].get_login()) << ",\n";
-            file << "\t" << toJsonString("password", all_users[i].get_password()) << ",\n";
-            file << "\t" << toJsonString("capital", std::to_string(all_users[i].get_capital())) << ",\n";
+            file << "\t" << toJsonString("login", all_users[i]->get_login()) << ",\n";
+            file << "\t" << toJsonString("password", all_users[i]->get_password()) << ",\n";
+            file << "\t" << toJsonString("capital", std::to_string(all_users[i]->get_capital())) << ",\n";
 
              std::stringstream ss;
-            for (const auto& one : all_users[i].get_favourites()) {
+            for (const auto& one : all_users[i]->get_favourites()) {
                 ss << one << " ";
             }
             std::string favouritesString = ss.str();
@@ -79,7 +79,8 @@ void user_base::LoadFromJson() {
         std::string favorites = obj["favorites"].get<std::string>();
 
         // Print the values
-        user u1(key, login, password, std::stoi(capital));
+        user* u1 = new user(key, login, password, std::stoi(capital));
+        add(u1);
         
         
 
@@ -98,9 +99,8 @@ void user_base::LoadFromJson() {
         }
 
         brand_crypto b1(word);
-        u1.add_favourite(word);
+        u1->add_favourite(word);
     }
-    add(u1);
     }
         std::cout << std::endl;
     std::cout << "Data loaded from " << name + ".json" << std::endl;

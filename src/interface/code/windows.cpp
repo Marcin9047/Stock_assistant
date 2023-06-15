@@ -22,8 +22,8 @@
 #include "../../sort/JsonParser.hpp"
 #include "../../sort/sort.h"
 
-extern user current_user("123", "123", "123");
-extern user_base users("session1");
+user* current_user = new user("123", "123", "123");
+user_base users("sesion1");
 
 bool show_login_window;
 bool show_profile_data;
@@ -65,7 +65,7 @@ void login_window::show()
     if (ImGui::Button("Log in"))
     {
         // users.log_in(login, password);
-        user u("100", login, password);
+        user* u = new user("100", login, password);
         current_user = u;
         show_profile_data = true;
         show_login_window = false;
@@ -87,9 +87,9 @@ void profile_window::show()
 {
     ImGui::Begin(window_title);
     std::string name = "Name: ";
-    const char *name_text = (name + current_user.get_name()).c_str();
+    const char *name_text = (name + current_user->get_name()).c_str();
     ImGui::Text("%s", name_text);
-    std::string capital_text = "Capital " + std::to_string(current_user.get_capital());
+    std::string capital_text = "Capital " + std::to_string(current_user->get_capital());
     ImGui::Text("%s", capital_text.c_str());
     static bool update = false;
     if (ImGui::Button("Update capital"))
@@ -106,7 +106,7 @@ void profile_window::show()
         }
         if (ImGui::Button("Update"))
         {
-            current_user.set_capital(std::stoi(capital));
+            current_user->set_capital(std::stoi(capital));
         }
     }
     ImGui::Text("Search for stock");
@@ -226,7 +226,13 @@ void profile_window::show()
         ImGui::SameLine();
         if (ImGui::Button("Add"))
         {
-            current_user.add_favourite(stock_name);
+            current_user->add_favourite(stock_name);
+            // std::cout << "123" << std::endl;
+            // std::cout << stock_name << std::endl;
+            // std::vector<std::string> fvs = current_user.get_favourites();
+            // std::cout << fvs.at(0);
+            // std::cout << (fvs).back();
+            // std::cout << (fvs).size();
             stock_name = "";
         }
     }
@@ -275,7 +281,7 @@ void registration_window::show()
     }
     if (ImGui::Button("Create account"))
     {
-        user u(username, login, password, std::stoi(capital));
+        user* u = new user(username, login, password, std::stoi(capital));
         users.add(u);
         // users.log_in(login, password);
         current_user = u;

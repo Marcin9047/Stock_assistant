@@ -109,47 +109,47 @@ TEST_CASE("User class")
    SECTION("capital test")
     {
         user_base sesion1("sesja1");
-        user u1("John3", "John_John", "8832");
-        user u2("John4", "John_John2", "8835");
+        user* u1 = new user("John3", "John_John", "8832");
+        user* u2 = new user("John4", "John_John2", "8835");
         sesion1 % u1;
         sesion1 % u2;
-        u1.set_capital(320);
-        std::vector<user> all = sesion1.get_users(); 
+        u1->set_capital(320);
+        std::vector<user*> all = sesion1.get_users(); 
         REQUIRE(all.size() == 2);
     }
 
     SECTION("log_in test")
     {
         user_base sesion1("sesja1");
-        user u1("John", "John_John", "500");
-        user u2("John2", "John_John2", "8832");
+        user* u1 = new user("John", "John_John", "500");
+        user* u2 = new user("John2", "John_John2", "8832");
         sesion1 % u1;
         sesion1 % u2;
         std::vector<std::string> data = {"John_John2" ,"8832"};
-        user u4 = sesion1 << data;
-        REQUIRE(u4.get_name() == "John2");
-        REQUIRE(u4.islogged() == true);
+        user* u4 = sesion1 << data;
+        REQUIRE(u4->get_name() == "John2");
+        REQUIRE(u4->islogged() == true);
     }
     
     SECTION("log_in test")
     {
         user_base sesion1("sesja 1");
-        user u1("John", "John_John", "500");
-        user u2("John2", "John_John2", "8832");
+        user* u1 = new user("John", "John_John", "500");
+        user* u2 = new user("John2", "John_John2", "8832");
         sesion1 % u1;
         sesion1 % u2;
         std::vector<std::string> data = {"John_John2" ,"8832"};
-        user u4 = sesion1 << data;
+        user* u4 = sesion1 << data;
         sesion1 >> u4;
         sesion1.writeJsonToFile();
-        REQUIRE(u4.islogged() == false);
+        REQUIRE(u4->islogged() == false);
     }
 
     SECTION("log_in test")
     {
         user_base sesion1("sesja 1");
-        user u1("John", "John_John", "500");
-        user u2("John2", "John_John2", "8832");
+        user* u1 = new user("John", "John_John", "500");
+        user* u2 = new user("John2", "John_John2", "8832");
 
 
         brand_crypto b1("firma1");
@@ -157,9 +157,9 @@ TEST_CASE("User class")
         brand_crypto b3("firma3");
 
 
-        u1.add_favourite("firma1");
-        u1.add_favourite("firma2");
-        u1.add_favourite("firma3");
+        u1->add_favourite("firma1");
+        u1->add_favourite("firma2");
+        u1->add_favourite("firma3");
 
 
         sesion1 % u1;
@@ -171,16 +171,24 @@ TEST_CASE("User class")
         sesion2.LoadFromJson();
 
         std::vector<std::string> data = {"John_John" ,"500"};
-        user u4 = sesion2 << data;
+        user* u4 = sesion2 << data;
 
 
-        std::vector<std::string> favorites = u4.get_favourites();
+        std::vector<std::string> favorites = u4->get_favourites();
         for (int i; i < favorites.size(); i++)
         {
             std::cout << favorites[i];
         };
 
-        std::vector<user> all = sesion2.get_users();
+        std::vector<user*> all = sesion2.get_users();
+        for (int i = 0; i < all.size(); i++)
+        {
+            std::cout << all.size();
+            std::cout << all[i]->get_login();
+            std::cout << all[i]->get_password();
+        };
+
+        
         REQUIRE(all.size() == 2);
         REQUIRE(favorites.size() == 3);
     }
