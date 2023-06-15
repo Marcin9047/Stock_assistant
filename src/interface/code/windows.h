@@ -24,23 +24,23 @@ public:
 class login_window: public window {
 public:
     login_window();
-    void show();
+    void show(int width, int height);
 };
 
 class profile_window: public window {
 public:
     profile_window();
-    void show();
+    void show(int width, int height);
 };
 
 class registration_window: public window {
 public:
     registration_window();
-    void show();
+    void show(int width, int height);
 };
 
 class login_error_window: public window {
 public:
     login_error_window();
-    void show();
+    void show(int width, int height);
 };

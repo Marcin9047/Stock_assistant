@@ -88,24 +88,25 @@ int main(int, char**)
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        
+        int width, height;
+        glfwGetWindowSize(window, &width, &height);
         
         if (show_login_window) {
 
-            log_wnd.show();
+            log_wnd.show(width, height);
         }
 
         
         if (show_profile_data) {
-            prof_wnd.show();
+            prof_wnd.show(width, height);
         }
 
         if (show_registration) {
-            register_wnd.show();
+            register_wnd.show(width, height);
         }
 
         if (show_login_error_window) {
-            error_wnd.show();
+            error_wnd.show(width, height);
         }
 
         // Rendering
