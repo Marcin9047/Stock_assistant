@@ -13,11 +13,14 @@ class sort
 
     public:
     sort(int capital, std::string attitude, std::vector<std::string> favourites);
-    double recentdiff(const std::vector<double>& inputArray);
-    bool isrising(const std::vector<double>& inputArray);
-    bool islqrise(const std::vector<double>& inputArray);//return true if volumen raisings
-    double hop(const std::vector<double>& lowArray, const std::vector<double>& highArray, const std::vector<double>& openArray,const std::vector<double>& closeArray);
+    double recentdiff(const std::vector<double> inputArray);
+    bool isrising(const std::vector<double> inputArray);
+    bool islqrise(const std::vector<double> inputArray);//return true if volumen raisings
+    double hop(const std::vector<double> lowArray, const std::vector<double> highArray, const std::vector<double> openArray,const std::vector<double> closeArray);
     std::vector<brand_crypto> best_match();
+    std::vector<std::string> best_match_str();
+    // std::string bm(); debug
+    // int sizebn();  debug fun
 
 
 };

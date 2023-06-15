@@ -4,11 +4,13 @@
 #include <list>
 #include <string>
 #include <fstream>
+#include <algorithm>
 #include "sort.h"
 #include "JsonParser.hpp"
 #include "JsonFile.h"
 #include "../api/api.h"
 #include "../api/api_cc.h"
+
 
 using DataPoint = JsonParser::DataPoint;
 
@@ -23,24 +25,39 @@ sort::sort(int capital, std::string attitude, std::vector<std::string> favourite
     NamePars name_parser;
     std::vector<std::string> cryptos = name_parser.parseNames(cryptos_names);
     std::string currency="USD";
-    std::string new_name;
 
-    for(int i=0;i<cryptos.size();i++)//for each brand
+    for(long unsigned int i=0;i<cryptos.size();i++)//for each brand
     {
         std::string crypto= cryptos[i];
+
+        //check if crypto is not already in favourites
+        if(std::find(favourites.begin(), favourites.end(), crypto) != favourites.end())
+        {
+            continue;
+        }
+
+
         if(attitude=="lowkey")
         {
-            std::string type = "monthly";
+            std::string type = "daily";
             ApiCC api;
             api.set_type(type);
             api.set_crypto(crypto);
             api.set_currency(currency);
             std::string jsonString = api.get_data();
             JsonParser parser;
-            NASDAQ_pars N_parser;
+            //NASDAQ_pars N_parser;
             std::vector<DataPoint> dataPoints = parser.parseJSON(jsonString);
-            std::vector<DataPoint> N_dataPoints = N_parser.parse_NASDAQ(jsonString);
+            //std::vector<DataPoint> N_dataPoints = N_parser.parse_NASDAQ(jsonString);
             std::vector<double> close = parser.getCloseVector(dataPoints);
+            if(close.size()<4)
+            {
+                continue;//some cryptos dont have api data
+            }
+            std::vector<double> open = parser.getOpenVector(dataPoints);
+            std::vector<double> VolumeTo = parser.getVolumeToVector(dataPoints);
+            std::vector<double> high=parser.getHighVector(dataPoints);
+            std::vector<double> low=parser.getLowVector(dataPoints);
             float g_wsp = 1.0;  //  recent growth either good or bad
             float r_wsp = 5.0;  // rise == good
             float l_wsp = 1.5;   // liquidity either good or bad
@@ -53,7 +70,7 @@ sort::sort(int capital, std::string attitude, std::vector<std::string> favourite
                 new_wsp += r_wsp;
                 g_wsp *= recentdiff(close);
 
-                if(islqrise(parser.getVolumeToVector(dataPoints)))
+                if(islqrise(VolumeTo))
                 {
                     new_wsp += (g_wsp-1)*l_wsp;//jeśli funkcja globalnie rosnie to jesli rosnie plynnosc to chcemy by osttatnia wartosc byla w gorca
                 }
@@ -63,18 +80,18 @@ sort::sort(int capital, std::string attitude, std::vector<std::string> favourite
 
                 }
 
-                if(hop(parser.getLowVector(dataPoints), parser.getHighVector(dataPoints), parser.getOpenVector(dataPoints), parser.getCloseVector(dataPoints))<0.1)
+                if(hop(low, high, open, close)<0.1)
                 {
                     new_wsp += h_wsp;
                 }
 
             }
 
-            new_wsp*=risk_wsp;
+            //new_wsp*=risk_wsp;
             if(new_wsp>wsp)
             {
                 wsp = new_wsp;
-                brand_name.push_back(new_name);
+                brand_name.push_back(crypto);
                 if(brand_name.size()>3)
                 {
                     brand_name.front().erase();
@@ -90,22 +107,30 @@ sort::sort(int capital, std::string attitude, std::vector<std::string> favourite
             api.set_currency(currency);
             std::string jsonString = api.get_data();
             JsonParser parser;
-            NASDAQ_pars N_parser;
+            //NASDAQ_pars N_parser;
             std::vector<DataPoint> dataPoints = parser.parseJSON(jsonString);
-            std::vector<DataPoint> N_dataPoints = N_parser.parse_NASDAQ(jsonString);
+            //std::vector<DataPoint> N_dataPoints = N_parser.parse_NASDAQ(jsonString);
             std::vector<double> close = parser.getCloseVector(dataPoints);
+            if(close.size()<4)
+            {
+                continue;//some cryptos dont have api data
+            }
+            std::vector<double> open = parser.getOpenVector(dataPoints);
+            std::vector<double> VolumeTo = parser.getVolumeToVector(dataPoints);
+            std::vector<double> high=parser.getHighVector(dataPoints);
+            std::vector<double> low=parser.getLowVector(dataPoints);
             float g_wsp = 2.0;  //  recent growth either good or bad
             float r_wsp = 5.0;  // rise == good
             float l_wsp = 1.5;   // liquidity either good or bad
-            float h_wsp = 0.5; // hops higher==better (for risky)
-            float wsp=0;
+            float h_wsp = 2.5; // hops higher==better (for risky)
+            float wsp=-50;
             float new_wsp=0;
             if(isrising(close))
             {
                 new_wsp += r_wsp;
                 g_wsp *= recentdiff(close);
 
-                if(islqrise(parser.getVolumeToVector(dataPoints)))
+                if(islqrise(VolumeTo))
                 {
                     new_wsp += (g_wsp-2)*l_wsp;//jeśli funkcja globalnie rosnie to jesli rosnie plynnosc to chcemy by osttatnia wartosc byla w gorca
                 }
@@ -115,7 +140,7 @@ sort::sort(int capital, std::string attitude, std::vector<std::string> favourite
 
                 }
 
-                if(hop(parser.getLowVector(dataPoints), parser.getHighVector(dataPoints), parser.getOpenVector(dataPoints), parser.getCloseVector(dataPoints))<0.5)
+                if(hop(low,high , open, close)<0.5)
                 {
                     new_wsp += h_wsp;
                 }
@@ -123,9 +148,9 @@ sort::sort(int capital, std::string attitude, std::vector<std::string> favourite
             }
             else
             {
-                h_wsp *= hop(parser.getLowVector(dataPoints), parser.getHighVector(dataPoints), parser.getOpenVector(dataPoints), parser.getCloseVector(dataPoints));
+                h_wsp *= hop(low, high, open, close);
                 g_wsp *= recentdiff(close);
-                if(islqrise(parser.getVolumeToVector(dataPoints)))
+                if(islqrise(VolumeTo))
                 {
                     new_wsp += (g_wsp-2)*l_wsp;//jeśli funkcja globalnie nie rosnie to jesli ostatnie wartosci sa w gorce to chcemy by plynnosc rosla gorce
                     new_wsp += h_wsp;
@@ -141,7 +166,7 @@ sort::sort(int capital, std::string attitude, std::vector<std::string> favourite
             if(new_wsp>wsp)
             {
                 wsp = new_wsp;
-                brand_name.push_back(new_name);
+                brand_name.push_back(crypto);
                 if(brand_name.size()>3)
                 {
                     brand_name.front().erase();
@@ -153,7 +178,7 @@ sort::sort(int capital, std::string attitude, std::vector<std::string> favourite
 
 };
 
-double sort::recentdiff(const std::vector<double>& inputArray) {
+double sort::recentdiff(const std::vector<double> inputArray) {
     int size = inputArray.size();
     if (size < 4) {
         throw std::invalid_argument("data must have at least 4 sampling periods");
@@ -169,7 +194,7 @@ double sort::recentdiff(const std::vector<double>& inputArray) {
     return difference;
 }
 
-bool sort::isrising(const std::vector<double>& inputArray)
+bool sort::isrising(const std::vector<double> inputArray)
 {
     double result =0.0;
     if (inputArray.size() < 2) {
@@ -198,7 +223,7 @@ bool sort::isrising(const std::vector<double>& inputArray)
     return false ;
 };
 
-bool sort::islqrise(const std::vector<double>& inputArray)
+bool sort::islqrise(const std::vector<double> inputArray)
 {
     int size = inputArray.size();
     double sum = 0.0;
@@ -224,9 +249,9 @@ bool sort::islqrise(const std::vector<double>& inputArray)
 
 };
 
-double sort::hop(const std::vector<double>& lowArray, const std::vector<double>& highArray, const std::vector<double>& openArray,const std::vector<double>& closeArray)
+double sort::hop(const std::vector<double> lowArray, const std::vector<double> highArray, const std::vector<double> openArray,const std::vector<double> closeArray)
 {
-    if(lowArray.size()!=highArray.size()!=openArray.size()!=closeArray.size())
+    if(lowArray.size()!=highArray.size())
     {
         throw std::invalid_argument("arrays must be same sizes");
     }
@@ -254,3 +279,19 @@ std::vector<brand_crypto> sort::best_match()
     return brand_vec;
 }
 
+std::vector<std::string> sort::best_match_str()
+{
+    return brand_name;
+}
+
+
+// std::string sort::bm()
+// {
+//     return brand_name[1];
+
+// }
+
+// int sort::sizebn()
+// {
+//     return brand_name.size();
+// }
