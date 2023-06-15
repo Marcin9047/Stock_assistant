@@ -92,7 +92,8 @@ TEST_CASE("constructor")
         std::string cryptos_names = api.get_data();
         NamePars name_parser;
         std::vector<std::string> crypto = name_parser.parseNames(cryptos_names);
-        REQUIRE(crypto.size()<50);
+        REQUIRE(crypto.size()<130);
+        REQUIRE(crypto.size()>30);
 
     }
 }
