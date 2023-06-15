@@ -66,7 +66,7 @@ void login_window::show(int width, int height)
     char buf2[255]{};
     {
         strncpy(buf2, password.c_str(), sizeof(buf2) - 1);
-        ImGui::InputText("Password", buf2, sizeof(buf2));
+        ImGui::InputText("Password", buf2, sizeof(buf2), ImGuiInputTextFlags_Password);
         password = buf2;
     }
 
@@ -162,20 +162,27 @@ void profile_window::show(int width, int height)
         }
         type = "hourly";
         std::vector<std::string> favs = current_user_ptr->get_favourites();
-        if (!favs.empty()) {
-            
-            if (ImGui::BeginCombo("##combo2", selected_stock.c_str())) {
-                for (size_t n = 0; n < favs.size(); n++)
+        int visible_items;
+        if (favs.size() < 5) {
+            visible_items = favs.size();
+        }
+        else {
+            visible_items = 5;
+        }
+        if (ImGui::ListBoxHeader("Items", ImVec2(-1, ImGui::GetTextLineHeightWithSpacing() * visible_items))) {
+            for (size_t i = 0; i < favs.size(); i++) {
+                bool is_selected = (selected_stock == favs[i]);
+                if (ImGui::Selectable(favs[i].c_str(), is_selected))
                 {
-                    bool is_selected = (selected_stock == favs[n]);
-
-                    if (ImGui::Selectable(favs[n].c_str(), is_selected))
-                        selected_stock = favs[n].c_str();
-                    if (is_selected)
-                        ImGui::SetItemDefaultFocus();
+                    selected_stock = favs[i].c_str();
                 }
-                ImGui::EndCombo();
+
+                if (is_selected)
+                {
+                    ImGui::SetItemDefaultFocus();
+                }
             }
+            ImGui::ListBoxFooter();
         }
         
         if (!selected_stock.empty()) {
@@ -209,7 +216,7 @@ void profile_window::show(int width, int height)
             }
             static ImVec4 bullCol = ImVec4(0.000f, 1.000f, 0.441f, 1.000f);
             static ImVec4 bearCol = ImVec4(0.853f, 0.050f, 0.310f, 1.000f);
-            ImGui::SameLine(); ImGui::ColorEdit4("##Bull", &bullCol.x, ImGuiColorEditFlags_NoInputs);
+            ImGui::ColorEdit4("##Bull", &bullCol.x, ImGuiColorEditFlags_NoInputs);
             ImGui::SameLine(); ImGui::ColorEdit4("##Bear", &bearCol.x, ImGuiColorEditFlags_NoInputs);
             ImPlot::GetStyle().UseLocalTime = false;
 
@@ -263,7 +270,7 @@ void profile_window::show(int width, int height)
     ImGui::End();
 }
 
-registration_window::registration_window() : window("Create account, all inputs can't have more than 6 characters")
+registration_window::registration_window() : window("Create account")
 {
 }
 
@@ -276,9 +283,10 @@ void registration_window::show(int width, int height)
     static std::string login{""};
     static std::string password{""};
     static std::string capital{""};
+    ImGui::Text("Inputs can't have more than 9 characters");
     
 
-    char buf[225]{};
+    char buf[255]{};
     {
         strncpy(buf, username.c_str(), sizeof(buf) - 1);
         ImGui::InputText("Username", buf, sizeof(buf));
@@ -295,7 +303,7 @@ void registration_window::show(int width, int height)
     char buf3[255]{};
     {
         strncpy(buf3, password.c_str(), sizeof(buf3) - 1);
-        ImGui::InputText("Password", buf3, sizeof(buf3));
+        ImGui::InputText("Password", buf3, sizeof(buf3), ImGuiInputTextFlags_Password);
         password = buf3;
     }
 
