@@ -18,6 +18,7 @@ class sort
     bool islqrise(const std::vector<double> inputArray);//return true if volumen raisings
     double hop(const std::vector<double> lowArray, const std::vector<double> highArray, const std::vector<double> openArray,const std::vector<double> closeArray);
     std::vector<brand_crypto> best_match();
+    std::vector<std::string> best_match_str();
     // std::string bm(); debug
     // int sizebn();  debug fun
 

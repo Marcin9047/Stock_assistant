@@ -279,6 +279,11 @@ std::vector<brand_crypto> sort::best_match()
     return brand_vec;
 }
 
+std::vector<std::string> sort::best_match_str()
+{
+    return brand_name;
+}
+
 
 // std::string sort::bm()
 // {
