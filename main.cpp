@@ -63,6 +63,7 @@ int main(int, char**)
     show_login_window = true;
     show_profile_data = false;
     show_registration = false;
+    show_login_error_window = false;
     ImVec4 clear_color = ImVec4(0.10f, 0.50f, 0.50f, 1.00f);
 
     // Main loop
@@ -74,6 +75,7 @@ int main(int, char**)
     login_window log_wnd;
     profile_window prof_wnd;
     registration_window register_wnd;
+    login_error_window error_wnd;
 
     while (!glfwWindowShouldClose(window))
 #endif
@@ -96,10 +98,14 @@ int main(int, char**)
         
         if (show_profile_data) {
             prof_wnd.show();
-            
         }
+
         if (show_registration) {
             register_wnd.show();
+        }
+
+        if (show_login_error_window) {
+            error_wnd.show();
         }
 
         // Rendering

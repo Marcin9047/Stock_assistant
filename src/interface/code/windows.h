@@ -10,6 +10,7 @@ extern bool show_login_window;
 extern bool show_profile_data;
 extern bool show_stock;
 extern bool show_registration;
+extern bool show_login_error_window;
 
 class window {
 protected:
@@ -35,5 +36,11 @@ public:
 class registration_window: public window {
 public:
     registration_window();
+    void show();
+};
+
+class login_error_window: public window {
+public:
+    login_error_window();
     void show();
 };

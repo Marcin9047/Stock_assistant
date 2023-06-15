@@ -22,13 +22,14 @@
 #include "../../sort/JsonParser.hpp"
 #include "../../sort/sort.h"
 
-user* current_user = new user("123", "123", "123");
-user_base users("sesion1");
+user * current_user_ptr;
+user_base users("sesja 1");
 
 bool show_login_window;
 bool show_profile_data;
 bool show_stock;
 bool show_registration;
+bool show_login_error_window;
 
 window::window(const char *title) {
     window_title = title;
@@ -44,6 +45,11 @@ login_window::login_window() : window("Log in") {
 
 void login_window::show()
 {
+    static bool load_session = true;
+    if(load_session) {
+        users.LoadFromJson();
+        load_session = false;
+    }
     static std::string login{""};
     static std::string password{""};
     ImGui::Begin(window_title);
@@ -62,13 +68,22 @@ void login_window::show()
         password = buf2;
     }
 
-    if (ImGui::Button("Log in"))
-    {
-        // users.log_in(login, password);
-        user* u = new user("100", login, password);
-        current_user = u;
-        show_profile_data = true;
-        show_login_window = false;
+    if (ImGui::Button("Log in")) {
+        std::vector<std::string> log_in_data;
+        log_in_data.push_back(login);
+        log_in_data.push_back(password);
+        try{
+            current_user_ptr = users<<log_in_data;
+            show_profile_data = true;
+            show_login_window = false;
+        }
+        catch (...) {
+            show_login_window = false;
+            show_login_error_window = true;
+        }
+        login = "";
+        password = "";
+        
     }
     if (ImGui::Button("Create account"))
     {
@@ -87,9 +102,10 @@ void profile_window::show()
 {
     ImGui::Begin(window_title);
     std::string name = "Name: ";
-    const char *name_text = (name + current_user->get_name()).c_str();
+    // user current_user = *current_user_ptr;
+    const char *name_text = (name + current_user_ptr->get_name()).c_str();
     ImGui::Text("%s", name_text);
-    std::string capital_text = "Capital " + std::to_string(current_user->get_capital());
+    std::string capital_text = "Capital " + std::to_string(current_user_ptr->get_capital());
     ImGui::Text("%s", capital_text.c_str());
     static bool update = false;
     if (ImGui::Button("Update capital"))
@@ -106,7 +122,8 @@ void profile_window::show()
         }
         if (ImGui::Button("Update"))
         {
-            current_user->set_capital(std::stoi(capital));
+            current_user_ptr->set_capital(std::stoi(capital));
+            capital = "";
         }
     }
     ImGui::Text("Search for stock");
@@ -127,8 +144,8 @@ void profile_window::show()
         ImGui::EndCombo();
     }
     std::string att;
+    static std::string selected_stock = "";
     if (!attitude.empty()) {
-        static std::string selected_stock = "";
         int limit_multiplier;
         std::string type;
         if (attitude == "Long-term investment")
@@ -142,7 +159,7 @@ void profile_window::show()
             limit_multiplier = 100;
         }
         type = "hourly";
-        std::vector<std::string> favs = current_user.get_favourites();
+        std::vector<std::string> favs = current_user_ptr->get_favourites();
         if (!favs.empty()) {
             
             if (ImGui::BeginCombo("##combo2", selected_stock.c_str())) {
@@ -226,15 +243,20 @@ void profile_window::show()
         ImGui::SameLine();
         if (ImGui::Button("Add"))
         {
-            current_user->add_favourite(stock_name);
-            // std::cout << "123" << std::endl;
-            // std::cout << stock_name << std::endl;
-            // std::vector<std::string> fvs = current_user.get_favourites();
-            // std::cout << fvs.at(0);
-            // std::cout << (fvs).back();
-            // std::cout << (fvs).size();
+            std::vector<std::string> favs = current_user_ptr->get_favourites();
+            if (favs.empty() || !(std::count(favs.begin(), favs.end(), selected_stock))) {
+                current_user_ptr->add_favourite(stock_name);
+                users.writeJsonToFile();
+            }
             stock_name = "";
         }
+    }
+    if (ImGui::Button("Log out"))
+    {
+        selected_stock = "";
+        attitude = "";
+        show_profile_data = false;
+        show_login_window = true;
     }
     ImGui::End();
 }
@@ -282,16 +304,33 @@ void registration_window::show()
     if (ImGui::Button("Create account"))
     {
         user* u = new user(username, login, password, std::stoi(capital));
-        users.add(u);
-        // users.log_in(login, password);
-        current_user = u;
+        std::vector<std::string> log_in_data;
+        log_in_data.push_back(login);
+        log_in_data.push_back(password);
+        users%(u);
+        current_user_ptr = users<<log_in_data;
+        users.writeJsonToFile();
         show_registration = false;
         show_profile_data = true;
     }
     if (ImGui::Button("Go back to logging in"))
     {
+        users.writeJsonToFile();
         show_login_window = true;
         show_registration = false;
+    }
+    ImGui::End();
+}
+
+login_error_window::login_error_window() : window("Create account") {
+}
+
+void login_error_window::show() {
+    ImGui::Begin(window_title);
+    ImGui::Text("Wrong login or password");
+    if (ImGui::Button("Try again")) {
+        show_login_error_window = false;
+        show_login_window = true;
     }
     ImGui::End();
 }
