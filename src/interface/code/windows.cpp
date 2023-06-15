@@ -22,6 +22,7 @@
 #include "../../sort/JsonParser.hpp"
 #include "../../sort/sort.h"
 
+std::vector<std::string> stocks;
 user * current_user_ptr;
 user_base users("sesja 1");
 
@@ -85,7 +86,7 @@ void login_window::show(int width, int height)
         }
         login = "";
         password = "";
-        
+
     }
     if (ImGui::Button("Create account"))
     {
@@ -147,18 +148,25 @@ void profile_window::show(int width, int height)
         ImGui::EndCombo();
     }
     static bool sorts = false;
+    static bool start_sort = false;
     std::string att;
     static std::string selected_stock = "";
     if (!attitude.empty()) {
-        std::vector<std::string> favs;
+        //std::vector<std::string> stocks;
         std::string button_name;
         if (sorts) {
-            // sort sorting(current_user_ptr->get_capital(), att, favs);
-            // favs = sorting.best_match();
-            favs = {"BTC", "ADA", "ETH"};
+            if(start_sort)
+            {
+                sort sorting(current_user_ptr->get_capital(), att, stocks);
+                stocks = sorting.best_match_str();
+                //stocks = {"BTC", "ADA", "ETH"};
+            }
+
+
             button_name = "Show all favourites";
+            start_sort=false;
         } else {
-            favs = current_user_ptr->get_favourites();
+            stocks = current_user_ptr->get_favourites();
             button_name = "Show chosen for you";
         }
         int limit_multiplier;
@@ -175,18 +183,18 @@ void profile_window::show(int width, int height)
         }
         type = "hourly";
         int visible_items;
-        if (favs.size() < 5) {
-            visible_items = favs.size();
+        if (stocks.size() < 5) {
+            visible_items = stocks.size();
         }
         else {
             visible_items = 5;
         }
         if (ImGui::ListBoxHeader("Items", ImVec2(-1, ImGui::GetTextLineHeightWithSpacing() * visible_items))) {
-            for (size_t i = 0; i < favs.size(); i++) {
-                bool is_selected = (selected_stock == favs[i]);
-                if (ImGui::Selectable(favs[i].c_str(), is_selected))
+            for (size_t i = 0; i < stocks.size(); i++) {
+                bool is_selected = (selected_stock == stocks[i]);
+                if (ImGui::Selectable(stocks[i].c_str(), is_selected))
                 {
-                    selected_stock = favs[i].c_str();
+                    selected_stock = stocks[i].c_str();
                 }
 
                 if (is_selected)
@@ -198,8 +206,12 @@ void profile_window::show(int width, int height)
         }
         if (ImGui::Button(button_name.c_str())) {
             sorts = !sorts;
+            if(sorts)
+            {
+                start_sort= true;
+            }
         }
-        
+
         if (!selected_stock.empty()) {
             ApiCC req;
             req.set_type(type);
@@ -207,7 +219,7 @@ void profile_window::show(int width, int height)
             req.set_currency("USD");
             std::string info = req.get_data();
             JsonParser parser;
-            std::vector<JsonParser::DataPoint> dataPoints = parser.parseJSON(info);   
+            std::vector<JsonParser::DataPoint> dataPoints = parser.parseJSON(info);
             std::vector<double> dates = parser.getTimeVector(dataPoints);
             std::vector<double> opens = parser.getOpenVector(dataPoints);
             std::vector<double> highs = parser.getHighVector(dataPoints);
@@ -267,8 +279,8 @@ void profile_window::show(int width, int height)
         ImGui::SameLine();
         if (ImGui::Button("Add"))
         {
-            std::vector<std::string> favs = current_user_ptr->get_favourites();
-            if (favs.empty() || !(std::count(favs.begin(), favs.end(), stock_name))) {
+            std::vector<std::string> stocks = current_user_ptr->get_favourites();
+            if (stocks.empty() || !(std::count(stocks.begin(), stocks.end(), stock_name))) {
                 current_user_ptr->add_favourite(stock_name);
                 users.writeJsonToFile();
             }
@@ -299,7 +311,7 @@ void registration_window::show(int width, int height)
     static std::string password{""};
     static std::string capital{""};
     ImGui::Text("Inputs can't have more than 9 characters");
-    
+
 
     char buf[255]{};
     {

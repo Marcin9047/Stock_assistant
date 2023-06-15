@@ -11,6 +11,7 @@ extern bool show_profile_data;
 extern bool show_stock;
 extern bool show_registration;
 extern bool show_login_error_window;
+extern std::vector<std::string> stocks;
 
 class window {
 protected:
