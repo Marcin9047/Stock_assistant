@@ -105,9 +105,12 @@ TEST_CASE("sort")
         std::vector<std::string> fav;
         std::string att = "lowkey";
         sort a(1,att,fav);
+
         std::vector<brand_crypto> cryptos = a.best_match();
         std::string name = cryptos[0].get_brand();
         REQUIRE_FALSE(name.empty());
+        REQUIRE(cryptos.size()<=3);
+
 
 
     }
@@ -119,6 +122,7 @@ TEST_CASE("sort")
         std::vector<brand_crypto> r_cryptos = r.best_match();
         std::string r_name = r_cryptos[0].get_brand();
         REQUIRE_FALSE(r_name.empty());
+        REQUIRE(r_cryptos.size()<=3);
 
 
     }
