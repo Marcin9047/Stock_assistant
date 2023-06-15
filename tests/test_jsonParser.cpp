@@ -1,3 +1,4 @@
+#include<iostream>
 #include "catch.hpp"
 #include <list>
 #include <vector>
@@ -5,6 +6,9 @@
 #include "../src/sort/json.hpp"
 #include "../src/sort/JsonFile.h"
 #include "../src/sort/JsonParser.hpp"
+#include "../src/sort/sort.h"
+#include "../src/api/api_cc.h"
+#include "../src/api/api.h"
 
 using json = nlohmann::json;
 using DataPoint = JsonParser::DataPoint;
@@ -53,6 +57,77 @@ TEST_CASE("Get close vector")
         std::vector<double> actualCloseVector = parser.getCloseVector(dataPoints);
 
         REQUIRE(actualCloseVector == expectedCloseVector);
+    }
+}
+
+TEST_CASE("constructor")
+{
+    SECTION("BTC")
+    {
+        std::string currency="USD";
+        std::string type = "daily";
+        std::string crypto = "BTC";
+        JsonParser parser;
+        ApiCC api;
+        api.set_type(type);
+        api.set_crypto(crypto);
+        api.set_currency(currency);
+        std::string jsonString = api.get_data();
+        std::vector<DataPoint> dataPoints = parser.parseJSON(jsonString);
+        std::vector<double> CloseVector = parser.getCloseVector(dataPoints);
+        std::vector<double> OpenVector = parser.getOpenVector(dataPoints);
+        std::vector<double> HighVector = parser.getHighVector(dataPoints);
+        std::vector<double> LowVector = parser.getLowVector(dataPoints);
+        REQUIRE(CloseVector.size()==31);
+        REQUIRE(OpenVector.size()==31);
+        REQUIRE(HighVector.size()==31);
+        REQUIRE(LowVector.size()==31);
+
+    }
+
+    SECTION("Nameparser")
+    {
+        ApiCC api;
+        api.set_type("symbols");
+        std::string cryptos_names = api.get_data();
+        NamePars name_parser;
+        std::vector<std::string> crypto = name_parser.parseNames(cryptos_names);
+        REQUIRE(crypto.size()<130);
+        REQUIRE(crypto.size()>30);
 
     }
 }
+
+TEST_CASE("sort")
+{
+    SECTION("lowkey")
+    {
+        std::vector<std::string> fav;
+        std::string att = "lowkey";
+        sort a(1,att,fav);
+        std::vector<brand_crypto> cryptos = a.best_match();
+        std::string name = cryptos[0].get_brand();
+        REQUIRE_FALSE(name.empty());
+
+
+    }
+        SECTION("risky")
+    {
+        std::vector<std::string> fav;
+        std::string att = "risky";
+        sort r(1,att,fav);
+        std::vector<brand_crypto> r_cryptos = r.best_match();
+        std::string r_name = r_cryptos[0].get_brand();
+        REQUIRE_FALSE(r_name.empty());
+
+
+    }
+}
+
+
+
+
+
+
+
+
