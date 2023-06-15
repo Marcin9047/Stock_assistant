@@ -207,8 +207,8 @@ void profile_window::show()
             }
             static ImVec4 bullCol = ImVec4(0.000f, 1.000f, 0.441f, 1.000f);
             static ImVec4 bearCol = ImVec4(0.853f, 0.050f, 0.310f, 1.000f);
-            // ImGui::SameLine(); ImGui::ColorEdit4("##Bull", &bullCol.x, ImGuiColorEditFlags_NoInputs);
-            // ImGui::SameLine(); ImGui::ColorEdit4("##Bear", &bearCol.x, ImGuiColorEditFlags_NoInputs);
+            ImGui::SameLine(); ImGui::ColorEdit4("##Bull", &bullCol.x, ImGuiColorEditFlags_NoInputs);
+            ImGui::SameLine(); ImGui::ColorEdit4("##Bear", &bearCol.x, ImGuiColorEditFlags_NoInputs);
             ImPlot::GetStyle().UseLocalTime = false;
 
             static bool tooltip = true;
@@ -244,7 +244,7 @@ void profile_window::show()
         if (ImGui::Button("Add"))
         {
             std::vector<std::string> favs = current_user_ptr->get_favourites();
-            if (favs.empty() || !(std::count(favs.begin(), favs.end(), selected_stock))) {
+            if (favs.empty() || !(std::count(favs.begin(), favs.end(), stock_name))) {
                 current_user_ptr->add_favourite(stock_name);
                 users.writeJsonToFile();
             }
