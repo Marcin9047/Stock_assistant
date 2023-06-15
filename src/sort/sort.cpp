@@ -25,7 +25,7 @@ sort::sort(int capital, std::string attitude, std::vector<std::string> favourite
     NamePars name_parser;
     std::vector<std::string> cryptos = name_parser.parseNames(cryptos_names);
     std::string currency="USD";
-
+    float wsp=0;
     for(long unsigned int i=0;i<cryptos.size();i++)//for each brand
     {
         std::string crypto= cryptos[i];
@@ -62,8 +62,8 @@ sort::sort(int capital, std::string attitude, std::vector<std::string> favourite
             float r_wsp = 5.0;  // rise == good
             float l_wsp = 1.5;   // liquidity either good or bad
             float h_wsp = 3.0; // hops lower==better (for lowkey)
-            float wsp=0;
-            float new_wsp=0;
+
+            float new_wsp=1;
 
             if(isrising(close))
             {
@@ -87,14 +87,14 @@ sort::sort(int capital, std::string attitude, std::vector<std::string> favourite
 
             }
 
-            //new_wsp*=risk_wsp;
+            new_wsp*=risk_wsp;
             if(new_wsp>wsp)
             {
                 wsp = new_wsp;
                 brand_name.push_back(crypto);
                 if(brand_name.size()>3)
                 {
-                    brand_name.front().erase();
+                    brand_name.erase(brand_name.begin());
                 }
             }
         }
@@ -123,7 +123,7 @@ sort::sort(int capital, std::string attitude, std::vector<std::string> favourite
             float r_wsp = 5.0;  // rise == good
             float l_wsp = 1.5;   // liquidity either good or bad
             float h_wsp = 2.5; // hops higher==better (for risky)
-            float wsp=-50;
+
             float new_wsp=0;
             if(isrising(close))
             {
@@ -169,7 +169,7 @@ sort::sort(int capital, std::string attitude, std::vector<std::string> favourite
                 brand_name.push_back(crypto);
                 if(brand_name.size()>3)
                 {
-                    brand_name.front().erase();
+                    brand_name.erase(brand_name.begin());
                 }
             }
         }
