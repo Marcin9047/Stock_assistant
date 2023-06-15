@@ -12,7 +12,7 @@ class sort
     std::vector<std::string> brand_name;
 
     public:
-    sort(int capital, std::string attitude, std::vector<std::string> favourites);
+    sort(int capital, std::string attitude, std::vector<brand_crypto> favourites);
     double recentdiff(const std::vector<double> inputArray);
     bool isrising(const std::vector<double> inputArray);
     bool islqrise(const std::vector<double> inputArray);//return true if volumen raisings
