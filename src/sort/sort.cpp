@@ -4,11 +4,13 @@
 #include <list>
 #include <string>
 #include <fstream>
+#include <algorithm>
 #include "sort.h"
 #include "JsonParser.hpp"
 #include "JsonFile.h"
 #include "../api/api.h"
 #include "../api/api_cc.h"
+
 
 using DataPoint = JsonParser::DataPoint;
 
@@ -24,9 +26,17 @@ sort::sort(int capital, std::string attitude, std::vector<std::string> favourite
     std::vector<std::string> cryptos = name_parser.parseNames(cryptos_names);
     std::string currency="USD";
 
-    for(int i=0;i<cryptos.size();i++)//for each brand
+    for(long unsigned int i=0;i<cryptos.size();i++)//for each brand
     {
         std::string crypto= cryptos[i];
+
+        //check if crypto is not already in favourites
+        if(std::find(favourites.begin(), favourites.end(), crypto) != favourites.end())
+        {
+            continue;
+        }
+
+
         if(attitude=="lowkey")
         {
             std::string type = "daily";
@@ -77,7 +87,7 @@ sort::sort(int capital, std::string attitude, std::vector<std::string> favourite
 
             }
 
-            new_wsp*=risk_wsp;
+            //new_wsp*=risk_wsp;
             if(new_wsp>wsp)
             {
                 wsp = new_wsp;
@@ -90,7 +100,7 @@ sort::sort(int capital, std::string attitude, std::vector<std::string> favourite
         }
         else
         {
-            std::string type = "hourly";
+            std::string type = "minute";
             ApiCC api;
             api.set_type(type);
             api.set_crypto(crypto);
@@ -112,8 +122,8 @@ sort::sort(int capital, std::string attitude, std::vector<std::string> favourite
             float g_wsp = 2.0;  //  recent growth either good or bad
             float r_wsp = 5.0;  // rise == good
             float l_wsp = 1.5;   // liquidity either good or bad
-            float h_wsp = 0.5; // hops higher==better (for risky)
-            float wsp=0;
+            float h_wsp = 2.5; // hops higher==better (for risky)
+            float wsp=-50;
             float new_wsp=0;
             if(isrising(close))
             {
