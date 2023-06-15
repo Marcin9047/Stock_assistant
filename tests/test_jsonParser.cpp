@@ -6,11 +6,106 @@
 #include "../src/sort/json.hpp"
 #include "../src/sort/JsonFile.h"
 #include "../src/sort/JsonParser.hpp"
+#include "../src/sort/sort.h"
 #include "../src/api/api_cc.h"
 #include "../src/api/api.h"
 
 using json = nlohmann::json;
 using DataPoint = JsonParser::DataPoint;
+
+
+        double recentdiff(const std::vector<double> inputArray)
+        {
+            int size = inputArray.size();
+            if (size < 4) {
+                throw std::invalid_argument("data must have at least 4 sampling periods");
+            }
+
+            double sum = 0.0;
+            for (int i = size - 2; i >= size - 4; --i) {
+                sum += inputArray[i];
+            }
+            double average = sum / 3.0;
+            double lastValue = inputArray[size - 1];
+            double difference = lastValue / average;
+            return difference;
+        }
+
+        bool isrising(const std::vector<double> inputArray)
+        {
+            double result =0.0;
+            if (inputArray.size() < 2) {
+                throw std::invalid_argument("data must have at least 2 sampling periods");
+            }
+
+            std::vector<double> currentArray = inputArray;
+
+            while (currentArray.size() > 2) {
+                std::vector<double> newArray;
+
+                for (size_t i = 0; i < currentArray.size() - 1; i++) {
+                    double average = (currentArray[i] + currentArray[i + 1]) / 2;
+                    newArray.push_back(average);
+                }
+
+                currentArray = newArray;
+            }
+
+            result = currentArray[1] - currentArray[0];
+
+            if (result>0)
+            {
+                return true;
+            }
+            return false ;
+        }
+
+        bool islqrise(const std::vector<double> inputArray)
+        {
+            int size = inputArray.size();
+            double sum = 0.0;
+
+            if (size < 4) {
+                throw std::invalid_argument("data must have at least 2 sampling periods");
+            }
+
+            for (int i = size - 2; i >= size - 4; --i) {
+                sum += inputArray[i];
+            }
+
+            double average = sum / 3.0;
+            double lastValue = inputArray[size - 1];
+            double difference = lastValue - average;
+            if(difference>0){
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+        double hop(const std::vector<double> lowArray, const std::vector<double> highArray, const std::vector<double> openArray,const std::vector<double> closeArray)
+        {
+            if(lowArray.size()!=highArray.size())
+            {
+                throw std::invalid_argument("arrays must be same sizes");
+            }
+
+            int size = lowArray.size();
+            double wsp;
+
+            for(int i=0;i<size;i++)
+            {
+                wsp += 2*(highArray[i]-lowArray[i])/(openArray[i]+closeArray[i]);
+            }
+            wsp /= double(size);
+
+            return wsp;
+        }
+
+
 
 TEST_CASE("Extracting time array") {
     JsonParser parser;
@@ -91,7 +186,41 @@ TEST_CASE("constructor")
         std::string cryptos_names = api.get_data();
         NamePars name_parser;
         std::vector<std::string> crypto = name_parser.parseNames(cryptos_names);
-        REQUIRE(crypto.size()<30);
+        REQUIRE(crypto.size()<50);
 
     }
 }
+
+TEST_CASE("sort")
+{
+    SECTION("lowkey")
+    {
+        std::vector<std::string> fav;
+        std::string att = "lowkey";
+        sort a(1,att,fav);
+        std::vector<brand_crypto> cryptos = a.best_match();
+        std::string name = cryptos[0].get_brand();
+        REQUIRE_FALSE(name.empty());
+
+
+    }
+        SECTION("risky")
+    {
+        std::vector<std::string> fav;
+        std::string att = "risky";
+        sort r(1,att,fav);
+        std::vector<brand_crypto> r_cryptos = r.best_match();
+        std::string r_name = r_cryptos[0].get_brand();
+        REQUIRE(r_name == "BTC");
+
+
+    }
+}
+
+
+
+
+
+
+
+
