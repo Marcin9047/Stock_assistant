@@ -184,7 +184,7 @@ sort::sort(int capital, std::string attitude, std::vector<std::string> favourite
 
 };
 
-double sort::recentdiff(const std::vector<double> inputArray) {
+double sort::recentdiff(const std::vector<double>& inputArray) {
     int size = inputArray.size();
     if (size < 4) {
         throw std::invalid_argument("data must have at least 4 sampling periods");
@@ -200,7 +200,7 @@ double sort::recentdiff(const std::vector<double> inputArray) {
     return difference;
 }
 
-bool sort::isrising(const std::vector<double> inputArray)
+bool sort::isrising(const std::vector<double>& inputArray)
 {
     double result =0.0;
     if (inputArray.size() < 2) {
@@ -229,7 +229,7 @@ bool sort::isrising(const std::vector<double> inputArray)
     return false ;
 };
 
-bool sort::islqrise(const std::vector<double> inputArray)
+bool sort::islqrise(const std::vector<double>& inputArray)
 {
     int size = inputArray.size();
     double sum = 0.0;
@@ -255,7 +255,7 @@ bool sort::islqrise(const std::vector<double> inputArray)
 
 };
 
-double sort::hop(const std::vector<double> lowArray, const std::vector<double> highArray, const std::vector<double> openArray,const std::vector<double> closeArray)
+double sort::hop(const std::vector<double>& lowArray, const std::vector<double>& highArray, const std::vector<double>& openArray,const std::vector<double>& closeArray)
 {
     if(lowArray.size()!=highArray.size())
     {
