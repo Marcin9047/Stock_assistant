@@ -108,7 +108,7 @@ Uzyskaliśmy schemat budowy aplikacji. Wybraliśmy odpowiednią bibliotekę inte
     - `write()` - zapisuje dane do pliku .json
 
 
-- `class JsonParser` - Dokonuje dekompozycji pliku .json  
+- `class JsonParser` - dokonuje dekompozycji pliku .json  
     - `parseJSON()` - zwraca wektor danych vector<DataPoint> posiadający
     atrybuty .time .open .close .high .low .volumeTo .volumeFrom
     - `get(..)List` - zwraca listy porządanych wartości (Time, Open, Close, High, Low, VolumeTo, VolumeFrom)    
@@ -117,11 +117,16 @@ Uzyskaliśmy schemat budowy aplikacji. Wybraliśmy odpowiednią bibliotekę inte
 
 - `class NASDAQ_pars` dziedziczy po `class JsonParser`. Dekompozycja pliku do wektora danych odpowiednia formatu .json zwracanego przez `class ApiNasdaq`
 
+- `class NamePars` - dokonuje dekompozycji pliku .json 
+    - `parseNames` - zwraca wektor nazw kryptowalut dostęnych na rynku, przy okazji losowo zmiejszając rozmiar wektora aby skrócić późniejszą analizę rynku
 
 - `class sort` - dokonuje wyboru odpowiedniej giełdy dla użytkownika na podstawie jego preferencji oraz aktualnej sytuacji giełdowej
     - `recentdiff()` - zwraca iloraz ostatniej wartości do średniej z 3 ostatnich cykli
     - `isrising()` - zwraca prawde jeśli wykres jest globalnie rosnący
     - `islqrising()` - zwraca prawdę jeśli ostatnia ilość wymienionych wolumenów jest większa od średniej z 3 ostatnich cykli
+    - `hop()` - zwraca współczynnik rozbieżności ekstremalnych wartości do średniej wartości w trakcie zadanego przedziału czasowego
+    - `best_match_str` - zwraca wektor co najwyżej 3 kryptowalut o najlepszych wynikach spośród analizowanych
+    
 
 ## Interface
 
