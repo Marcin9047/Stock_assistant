@@ -32,7 +32,7 @@ Marcin Połosak:
 
 ## Postęp projektu
 
-Uzyskaliśmy schemat budowy aplikacji. Wybraliśmy odpowiednią bibliotekę interface'u oraz wprowadziliśmy funkcje służące do odczytu API ze stron giełd.
+Uzyskaliśmy funkcjonalną aplikację. Wybraliśmy odpowiednią bibliotekę interface'u oraz wprowadziliśmy funkcje służące do odczytu API ze stron giełd. Zaimplementowane zostały algorytmy służące do sortowania. Wprowadzona została opcja logowania i tworzenia nowego konta użytkownika.
 
 # Wykorzystane biblioteki i narzędzia
 
@@ -44,6 +44,12 @@ Uzyskaliśmy schemat budowy aplikacji. Wybraliśmy odpowiednią bibliotekę inte
 
 - `glfw3` - biblioteka do wyświetlania głównego okna aplikacji
     - Linux: `sudo apt install libglfw3-dev`
+
+-` dear ImGui` - biblioteka umożliwiająca wyświtlanie graficznego interfejsu
+    - pliki źródłowe znajdują się w repozytorium w folderach imgui oraz backends, biblioteka nie wymaga instalacji
+
+- `ImPlot` - biblioteka oparta na dear ImGui odpowiadająca za wyświetlanie wykresów
+    - podobnie do ImGui nie wymaga instalacji, pliki źródłowe znajdują się w folderze implot
 
 
 # Zaimplementowane klasy
@@ -143,4 +149,6 @@ Uzyskaliśmy schemat budowy aplikacji. Wybraliśmy odpowiednią bibliotekę inte
 - `class registration_window` - klasa umożliwiająca stworzenie oka służącego do rejestracji nowego użytkownika
     - `show()` - wyświetla okno służące do zarejestrowania się użytkownikowi
 
+- `class login_error_window` - klasa umożliwijąca wyświetlanie okna z informacją o nieprawidłowych danych logowania
+    - `show()` - wyświetla okno z z informacją o będzie
 ## TBA
