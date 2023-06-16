@@ -33,7 +33,7 @@ TEST_CASE("Brand class") {
         b1 >> s1;
         std::string result = "3221";
         result += " ";  // Dodaj przerwę za pomocą operatora konkatenacji
-        result.append("15.70"); 
+        result.append("15.70");
         REQUIRE(s1 == result);
     }
 
@@ -75,7 +75,7 @@ TEST_CASE("Data class")
         crypto_data d1(3221, 32.1, 12.3, 10, 21, 34, 15.7, '$');
         REQUIRE(d1.get_time() == 3221);
     }
-    
+
     SECTION("get high value test")
     {
         crypto_data d1(3221, 32.1, 12.3, 10, 21, 34, 15.7, '$');
@@ -114,7 +114,7 @@ TEST_CASE("User class")
         sesion1 % u1;
         sesion1 % u2;
         u1->set_capital(320);
-        std::vector<user*> all = sesion1.get_users(); 
+        std::vector<user*> all = sesion1.get_users();
         REQUIRE(all.size() == 2);
     }
 
@@ -130,7 +130,7 @@ TEST_CASE("User class")
         REQUIRE(u4->get_name() == "John2");
         REQUIRE(u4->islogged() == true);
     }
-    
+
     SECTION("log_in test")
     {
         user_base sesion1("sesja 1");
@@ -175,20 +175,20 @@ TEST_CASE("User class")
 
 
         std::vector<std::string> favorites = u4->get_favourites();
-        for (int i; i < favorites.size(); i++)
+        for (long unsigned int i; i < favorites.size(); i++)
         {
             std::cout << favorites[i];
         };
 
         std::vector<user*> all = sesion2.get_users();
-        for (int i = 0; i < all.size(); i++)
+        for (long unsigned int i = 0; i < all.size(); i++)
         {
             std::cout << all.size();
             std::cout << all[i]->get_login();
             std::cout << all[i]->get_password();
         };
 
-        
+
         REQUIRE(all.size() == 2);
         REQUIRE(favorites.size() == 3);
     }
