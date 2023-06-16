@@ -59,11 +59,17 @@ sort::sort(int capital, std::string attitude, std::vector<std::string> favourite
             std::vector<double> high=parser.getHighVector(dataPoints);
             std::vector<double> low=parser.getLowVector(dataPoints);
             float g_wsp = 1.0;  //  recent growth either good or bad
-            float r_wsp = 5.0;  // rise == good
+            float r_wsp = 10.0;  // rise == good
             float l_wsp = 1.5;   // liquidity either good or bad
             float h_wsp = 3.0; // hops lower==better (for lowkey)
+            float c_wsp = 0;
+            float new_wsp=0;
 
-            float new_wsp=1;
+            if(capital>=10000)
+            {
+                c_wsp = 1;
+
+            }
 
             if(isrising(close))
             {
@@ -86,7 +92,7 @@ sort::sort(int capital, std::string attitude, std::vector<std::string> favourite
                 }
 
             }
-
+            new_wsp+=c_wsp;
             new_wsp*=risk_wsp;
             if(new_wsp>wsp)
             {
